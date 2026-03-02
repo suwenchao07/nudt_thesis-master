@@ -1,618 +1,209 @@
-\chapter{论文正文}
-\label{chap:main}
-本章将进入论文排版的正文, 按元素分主要包括：
-{\kai 字体段落，图片表格，公式定理，参考文献}这几部分。
-这个样例文件将包括模板中使用到的所有格式、模板中自定义命令到或者特有的东西，
-都将被一一介绍，希望大家在排版自己的学位论文前能细致的看一遍，记住样例的格式和
-方法，方便上手。
+\chapter{多粒度感知理论与仿生轻量化方法基础}
+\label{chap:theory}
 
-\section{字体段落}
-\label{sec:font}
+\section{引言}
 
-陈赓（1903年2月27日－1961年3月16日），原名陈庶康，中国湖南湘乡人，军事家。出生将门，其祖父为湘军将领陈翼怀。
+机载算力受限场景下的遥感视觉感知，在数学本质上是一个在严苛系统边界约束下求解结构风险最小化的带约束最优化问题（Constrained Optimization Problem, COP）。为了突破"感知精度提升必然导致算力指数级爆炸"的传统技术瓶颈，必须从底层的数学表征与跨学科的生物学先验中寻找破局点。本章将系统性地阐述遥感影像多粒度感知任务的数学空间映射模型，引入"算力-访存"双重受限的Roofline理论以严格界定边缘计算环境下的模型复杂度评价指标，并深入剖析深度视觉模型的轻量化演进机理。在此基础上，重点引入视觉仿生学与信息论（Information Theory）的理论先验，通过严密的数学推导，为后续章节中突触门控压缩、频空协同微调以及原生稀疏架构的设计提供坚实、不可辩驳的理论支撑。
 
-Adobe中文字体有四种：
+\section{遥感影像多粒度视觉感知任务的数学表征与优化目标}
 
-{\kai 楷体\verb|\kai|：陈赓，中国湖南湘乡人，军事家。出生将门，其祖父为湘军将领陈翼怀。%
-1952年筹办并任人民解放军军事工程学院第一任院长兼政委，培养国防科技人才。1955年被授予大将军衔。}
+遥感影像的视觉感知可依据空间与特征表征的精细度划分为实例级、空间像素级与光谱像素级三个粒度层次。深度神经网络在其中的作用，本质上是去逼近一个从高维观测空间（Observation Space）到低维语义空间（Semantic Space）的高度复杂的非线性映射算子。
 
-{\fs 仿宋\verb|\fs|：陈赓，中国湖南湘乡人，军事家。出生将门，其祖父为湘军将领陈翼怀。%
-1952年筹办并任人民解放军军事工程学院第一任院长兼政委，培养国防科技人才。1955年被授予大将军衔。}
+\subsection{实例级感知（遥感目标检测）的空间映射与损失模型}
 
-{\hei 黑体\verb|\hei|：陈赓，中国湖南湘乡人，军事家。出生将门，其祖父为湘军将领陈翼怀。%
-1952年筹办并任人民解放军军事工程学院第一任院长兼政委，培养国防科技人才。1955年被授予大将军衔。}
+不同于自然场景图像中目标的水平边界框（Horizontal Bounding Box, HBB），遥感影像通常由高空俯视拍摄，目标（如舰船、车辆）呈现出强烈的任意方向旋转分布。因此，实例级感知要求提取具有旋转不变性（Rotation Invariance）与等变性（Equivariance）的有向边界框（Oriented Bounding Box, OBB）。
 
-宋体就是正文字体了。下面测试字体大小，\LaTeX{}默认的列表环境会在
-条目之间插入过多的行距，在下面这种情况可能正好，若用户需要
-{\kai 正文行距}的列表环境，可以使用compactitem环境，记住这点很重要，不要再
-用那种自己修改\verb|itemsep|的傻傻的办法了。
-\begin{itemize}
-\item[初号] {\song\chuhao 陈赓大将}
-\item[小初] {\song\xiaochu 陈赓大将}
-\item[一号] {\song\yihao 陈赓大将}
-\item[小一] {\song\xiaoyi 陈赓大将}
-\item[二号] {\song\erhao 陈赓大将}
-\item[小二] {\song\xiaoer 陈赓大将}
-\item[三号] {\song\sanhao 陈赓大将}
-\item[小三] {\song\xiaosan 陈赓大将}
-\item[四号] {\song\sihao 陈赓大将}
-\item[小四] {\song\xiaosi 陈赓大将}
-\item[五号] {\song\wuhao 陈赓大将}
-\item[小五] {\song\xiaowu 陈赓大将}
-\end{itemize}
+设输入遥感影像张量为 $\mathbf{X} \in \mathbb{R}^{H \times W \times 3}$，实例级感知的目标是学习一个由参数 $\Theta_{det}$ 参数化的映射网络 $\mathcal{F}_{det}(\cdot; \Theta_{det})$，使得其输出集合逼近真实目标分布：
 
-\section{表格明细}
-\label{sec:figure}
-表格是论文的重要组成部分，我们从简单的表格讲起，到复杂的表格为止。
-
-模板中关于表格的宏包有三个： \textsf{booktabs}、\textsf{array} 和
-\textsf{longtabular}。三线表建议使用\textsf{booktabs}中提供的，
-包含toprule、midrule 和 bottomrule三条命令，简单干脆！
-它们与\textsf{longtable} 能很好的配合使用。下面来看一个表格实例：
-\begin{table}[htb]
-  \centering
-  \begin{minipage}[t]{0.8\linewidth} % 如果想在表格中使用脚注，minipage是个不错的办法
-  \caption[模板文件]{模板文件。如果表格的标题很长，那么在表格索引中就会很不美
-    观，所以要像 chapter 那样在前面用中括号写一个简短的标题。这个标题会出现在索
-    引中。}
-  \label{tab:template-files}
-    \begin{tabular*}{\linewidth}{lp{10cm}}
-      \toprule[1.5pt]
-      {\hei 文件名} & {\hei 描述} \\
-      \midrule[1pt]
-      nudtpaper.ins & \LaTeX{} 安装文件，docstrip\footnote{表格中的脚注} \\
-      nudtpaper.dtx & 所有的一切都在这里面\footnote{再来一个}。\\
-      nudtpaper.cls & 模板类文件。\\
-      nudtpaper.cfg & 模板配置文。cls 和 cfg 由前两个文件生成。\\
-      bstutf8.bst   & 参考文献 Bibtex 样式文件。\\
-      mynudt.sty    & 常用的包和命令写在这里，减轻主文件的负担。\\
-      \bottomrule[1.5pt]
-    \end{tabular*}
-  \end{minipage}
-\end{table}
-
-表 \ref{tab:template-files} 列举了本模板主要文件及其功能，基本上来说论文
-中最可能用到的就是这种表格形式了。
-请大家注意三线表中各条线对应的命令。这个例子还展示了如何在表格中正确使用脚注。
-如果你不需要在表格中插入脚注，可以将minipage环境去掉。
-由于\LaTeX{}本身不支持在表格中使用\verb|\footnote|，所以我们不得不将表格放在
-小页中，而且最好将表格的宽度设置为小页的宽度，这样脚注看起来才更美观。
-
-另外六院的同学在使用模板时需要使用一种固定宽度（往往是页宽，下面的例子由
-rongdonghu提供）的表格，内容需要居中且可以自动调整。
-解决办法是自定义了一种\verb|tabularx|中的\textbf{Z}环境，在论文模板中，
-该命令已添加到\verb|mynudt.sty|中。下面是这种情况的实例：
-
-\begin{table}[htbp]
-\centering
-\begin{minipage}[t]{0.9\linewidth}
-\caption{Reed Solomon码的典型应用}
-\label{tab:RSuse}
-\begin{tabularx}{\linewidth}{cZ}
-\toprule[1.5pt]
-{\hei 应用领域} & {\hei 编码方案}\\
-\midrule[1pt]
-磁盘驱动器 & RS(32,28,5)码 \footnote{码长为32、维数为28、最小距离为5} \\
-CD & 交叉交织RS码(CIRC) \\
-DVD & RS(208,192,17)码、RS(182,172,11)码 \\
-光纤通信 & RS(255,229,17)码 \\
-\bottomrule[1.5pt]
-\end{tabularx}
-\end{minipage}
-\end{table}
-
-我们经常会在表格下方标注数据来源，或者对表格里面的条目进行解释。前面的脚注是一种
-不错的方法，如果你不喜欢minipage方法的脚注。
-那么完全可以在表格后面自己写注释，比如表~\ref{tab:tabexamp1}。
-\begin{table}[htbp]
-  \centering
-  \caption{复杂表格示例 1}
-  \label{tab:tabexamp1}
-  \begin{minipage}[t]{0.8\textwidth} 
-    \begin{tabularx}{\linewidth}{|l|X|X|X|X|}
-      \hline
-      \multirow{2}*{\backslashbox{x}{y}}  & \multicolumn{2}{c|}{First Half} & \multicolumn{2}{c|}{Second Half}\\
-      \cline{2-5}
-      & 1st Qtr &2nd Qtr&3rd Qtr&4th Qtr \\ 
-      \hline
-      \multirow{2}*{East$^{*}$} &   20.4&   27.4&   90&     20.4 \\
-       &   30.6 &   38.6 &   34.6 &  31.6 \\ 
-      West$^{**}$ &   30.6 &   38.6 &   34.6 &  31.6 \\ 
-      \hline
-    \end{tabularx}\\[2pt]
-    \footnotesize
-    *：东部\\
-    **：西部
-  \end{minipage}
-\end{table}
-
-此外，表~\ref{tab:tabexamp1} 同时还演示了另外三个功能：1）通过 \textsf{tabularx} 的
- \texttt{|X|} 扩展实现表格内容自动调整；2）通过命令 \verb|\backslashbox| 在表头部分
-插入反斜线（WORD中很简单，但\LaTeX{}做表格需要一定的（极大的）想象力）；3）就是
-使用\verb|multirow|和\verb|multicolumn|命令。
-
-不可否认 \LaTeX{} 的表格功能没有想象中的那么强大，不过只要你足够认真，足够细致，那么
-同样可以排出来非常复杂非常漂亮的表格。可是科技论文中那么复杂表格有什么用呢？
-上面那个表格就够用啦。
-
-浮动体的并排放置一般有两种情况：1）二者没有关系，为两个独立的浮动体；2）二者隶属
-于同一个浮动体。对表格来说并排表格既可以像表~\ref{tab:parallel1}、表~\ref{tab:parallel2} 
-使用小页环境，也可以如表~\ref{tab:subtable}使用子表格来做。
-图与表同出一源，后面我们将讲解子图(subfloat)的例子。
-\begin{table}[htb]
-\centering
-\noindent\begin{minipage}{0.45\textwidth}
-\centering
-\caption{第一个并排子表格}
-\label{tab:parallel1}
-\begin{tabular}{p{2cm}p{2cm}}
-\toprule[1.5pt]
-111 & 222 \\\midrule[1pt]
-222 & 333 \\\bottomrule[1.5pt]
-\end{tabular}
-\end{minipage}
-\begin{minipage}{0.45\textwidth}
-\centering
-\caption{第二个并排子表格}
-\label{tab:parallel2}
-\begin{tabular}{p{2cm}p{2cm}}
-\toprule[1.5pt]
-111 & 222 \\\midrule[1pt]
-222 & 333 \\\bottomrule[1.5pt]
-\end{tabular}
-\end{minipage}
-\end{table}
-\begin{table}[htbp]
-\centering
-\caption{并排子表格}
-\label{tab:subtable}
-\subfloat[第一个子表格]{
-\begin{tabular}{p{2cm}p{2cm}}
-\toprule[1.5pt]
-111 & 222 \\\midrule[1pt]
-222 & 333 \\\bottomrule[1.5pt]
-\end{tabular}}\hskip2cm
-\subfloat[第二个子表格]{
-\begin{tabular}{p{2cm}p{2cm}}
-\toprule[1.5pt]
-111 & 222 \\\midrule[1pt]
-222 & 333 \\\bottomrule[1.5pt]
-\end{tabular}}
-\end{table}
-
-如果您要排版的表格长度超过一页，那么推荐使用\textsf{longtable}命令。
-这里随便敲入一些无关的文字，使得正文看上去不是那么的少。
-表~\ref{tab:performance} 就是 \textsf{longtable} 的简单示例。
-\begin{longtable}[c]{c*{6}{r}}
-\caption{实验数据}\label{tab:performance}\\
-\toprule[1.5pt]
- 测试程序 & \multicolumn{1}{c}{正常运行} & \multicolumn{1}{c}{同步}
-& \multicolumn{1}{c}{检查点}   & \multicolumn{1}{c}{卷回恢复}
-& \multicolumn{1}{c}{进程迁移} & \multicolumn{1}{c}{检查点} 	\\
-& \multicolumn{1}{c}{时间 (s)} & \multicolumn{1}{c}{时间 (s)}
-& \multicolumn{1}{c}{时间 (s)} & \multicolumn{1}{c}{时间 (s)}
-& \multicolumn{1}{c}{时间 (s)} &  文件（KB）			\\
-\midrule[1pt]%
-\endfirsthead%
-
-\multicolumn{7}{c}{续表~\thetable\hskip1em 实验数据}\\
-
-\toprule[1.5pt]
- 测试程序 & \multicolumn{1}{c}{正常运行} & \multicolumn{1}{c}{同步} 
-& \multicolumn{1}{c}{检查点}   & \multicolumn{1}{c}{卷回恢复}
-& \multicolumn{1}{c}{进程迁移} & \multicolumn{1}{c}{检查点} 	\\
-& \multicolumn{1}{c}{时间 (s)} & \multicolumn{1}{c}{时间 (s)}
-& \multicolumn{1}{c}{时间 (s)} & \multicolumn{1}{c}{时间 (s)}
-& \multicolumn{1}{c}{时间 (s)} &  文件（KB）			\\
-\midrule[1pt]%
-\endhead%
-\hline%
-
-\multicolumn{7}{r}{续下页}%
-
-\endfoot%
-\endlastfoot%
-CG.A.2 & 23.05   & 0.002 & 0.116 & 0.035 & 0.589 & 32491  \\
-CG.A.4 & 15.06   & 0.003 & 0.067 & 0.021 & 0.351 & 18211  \\
-CG.A.8 & 13.38   & 0.004 & 0.072 & 0.023 & 0.210 & 9890   \\
-CG.B.2 & 867.45  & 0.002 & 0.864 & 0.232 & 3.256 & 228562 \\
-CG.B.4 & 501.61  & 0.003 & 0.438 & 0.136 & 2.075 & 123862 \\
-CG.B.8 & 384.65  & 0.004 & 0.457 & 0.108 & 1.235 & 63777  \\
-MG.A.2 & 112.27  & 0.002 & 0.846 & 0.237 & 3.930 & 236473 \\
-MG.A.4 & 59.84   & 0.003 & 0.442 & 0.128 & 2.070 & 123875 \\
-MG.A.8 & 31.38   & 0.003 & 0.476 & 0.114 & 1.041 & 60627  \\
-MG.B.2 & 526.28  & 0.002 & 0.821 & 0.238 & 4.176 & 236635 \\
-MG.B.4 & 280.11  & 0.003 & 0.432 & 0.130 & 1.706 & 123793 \\
-MG.B.8 & 148.29  & 0.003 & 0.442 & 0.116 & 0.893 & 60600  \\
-LU.A.2 & 2116.54 & 0.002 & 0.110 & 0.030 & 0.532 & 28754  \\
-LU.A.4 & 1102.50 & 0.002 & 0.069 & 0.017 & 0.255 & 14915  \\
-LU.A.8 & 574.47  & 0.003 & 0.067 & 0.016 & 0.192 & 8655   \\
-LU.B.2 & 9712.87 & 0.002 & 0.357 & 0.104 & 1.734 & 101975 \\
-LU.B.4 & 4757.80 & 0.003 & 0.190 & 0.056 & 0.808 & 53522  \\
-LU.B.8 & 2444.05 & 0.004 & 0.222 & 0.057 & 0.548 & 30134  \\
-EP.A.2 & 123.81  & 0.002 & 0.010 & 0.003 & 0.074 & 1834   \\
-EP.A.4 & 61.92   & 0.003 & 0.011 & 0.004 & 0.073 & 1743   \\
-EP.A.8 & 31.06   & 0.004 & 0.017 & 0.005 & 0.073 & 1661   \\
-EP.B.2 & 495.49  & 0.001 & 0.009 & 0.003 & 0.196 & 2011   \\
-EP.B.4 & 247.69  & 0.002 & 0.012 & 0.004 & 0.122 & 1663   \\
-EP.B.8 & 126.74  & 0.003 & 0.017 & 0.005 & 0.083 & 1656   \\
-\bottomrule[1.5pt]
-\end{longtable}
-
-另外，有的同学不想让某个表格或者图片出现在索引里面，那么请使用命令 \verb|\caption*{}|，
-这个命令不会给表格编号，也就是出来的只有标题文字而没有“表~XX”，“图~XX”，否则
-索引里面序号{\kai 不连续}就显得不伦不类，这也是 \LaTeX{} 里星号命令默认的规则。
-
-\section{绘图插图}
-
-本模板不再预先装载任何绘图包（如 \textsf{pstricks，pgf} 等），完全由你自己来决定。
-个人觉得 \textsf{pgf} 不错，不依赖于 Postscript。此外还有很多针对 \LaTeX{} 的
- GUI 作图工具，如 XFig(jFig), WinFig, Tpx, Ipe, Dia, Inkscape, LaTeXPiX,
-jPicEdt 等等。本人强烈推荐\textsf{Ipe}。
-
-一般图形都是处在浮动环境中。之所以称为浮动是指最终排版效果图形的位置不一定与源文
-件中的位置对应，这也是刚使用 \LaTeX{} 同学可能遇到的问题。
-如果要强制固定浮动图形的位置，请使用 \textsf{float} 宏包，
-它提供了 \texttt{[H]}（意思是图片就给我放在这里\textcolor{red}{H}ere）参数，
-但是除非特别需要，不建议使用\texttt{[H]}，而是推荐使用\texttt{[htbp]}，
-给\LaTeX{}更多选择。比如图~\ref{fig:ipe}。
-\begin{figure}[htbp] % use float package if you want it here
-  \centering
-  \includegraphics[width=3in]{hello}
-  \caption{利用IPE制图}
-  \label{fig:ipe}
-\end{figure}
-
-若子图共用一个计数器，
-那么请看图~\ref{fig:big1}，它包含两个小图，分别是图~\ref{fig:subfig1} 
-和图~\ref{fig:subfig2}。这里推荐使用\verb|\subfloat|，{\bf 不要再用}
-\verb|\subfigure|和\verb|\subtable|。
-\begin{figure}[htb]
-  \centering%
-  \subfloat[第一个小图形]{%
-    \label{fig:subfig1}
-    \includegraphics[height=2cm]{xh}}\hspace{4em}%
-  \subfloat[第二个小图形。如果标题很长的话，它会自动换行，这个 caption 就是这样的例子]{%
-    \label{fig:subfig2}
-    \includegraphics[height=2cm]{xhh}}
-  \caption{包含子图形的大图形}
-  \label{fig:big1}
-\end{figure}
-
-而下面这个例子显示并排$3\times2$的图片，见图\ref{fig:subfig:3x2}:
-\begin{figure}[htb]
-\centering
-\subfloat[]{\includegraphics[width=.27\textwidth]{typography}} \qquad
-\subfloat[]{\includegraphics[width=.27\textwidth]{typography}} \qquad
-\subfloat[]{\includegraphics[width=.27\textwidth]{typography}} \qquad
-\subfloat[]{\includegraphics[width=.27\textwidth]{typography}} \qquad
-\subfloat[]{\includegraphics[width=.27\textwidth]{typography}} \qquad
-\subfloat[]{\includegraphics[width=.27\textwidth]{typography}}
-\caption{并排图片}
-\label{fig:subfig:3x2}
-\end{figure}
-
-要注意，图\ref{fig:subfig:3x2}例中
-\texttt{qquad}相当于\verb|\hspace{2em}|，也就是2个字符的宽度，约0.08倍页宽，
-图片宽度设定为0.27倍页宽是合适的；在该环境中，尽量不要手动换行，所以，不妨自己计算一下！
-
-如果要把编号的两个图形并排，那么小页(minipage)就非常有用了，可以分别参考
-图\ref{fig:parallel1}和图\ref{fig:parallel2}。其实这个例子和表格一节中并排
-放置的表格一摸一样。
-\begin{figure}[htb]
-\begin{minipage}{0.48\textwidth}
-  \centering
-  \includegraphics[height=1.2cm]{xhh}
-  \caption{并排第一个图}
-  \label{fig:parallel1}
-\end{minipage}\hfill
-\begin{minipage}{0.48\textwidth}
-  \centering
-  \includegraphics[height=1.2cm]{xhh}
-  \caption{并排第二个图}
-  \label{fig:parallel2}
-\end{minipage}
-\end{figure}
-
-图形就说这么多，因为大家在写论文是遇到的最大问题不是怎么把图插进去，
-而是怎样做出专业的、诡异的、震撼的图片来，记得在这时参考前面推荐的那
-些工具吧，当然必不可少的是Matlab了，至于如何加入中文标注、支持中文等等
-可以上网去查，但这里{\kai 推荐一点}，用好export命令，使得插入图片时尽可能的不要
-缩放，保证图文的一致性。
-
-\section{公式定理}
-\label{sec:equation}
-贝叶斯公式如式~(\ref{equ:chap1:bayes})，其中$p(y|\mathbf{x})$为后验；
-$p(\mathbf{x})$为先验；分母$p(\mathbf{x})$ 为归一化因子，这是
-实际应用中十分恐怖的一个积分式。
 \begin{equation}
-\label{equ:chap1:bayes}
-p(y|\mathbf{x}) = \frac{p(\mathbf{x},y)}{p(\mathbf{x})}=
-\frac{p(\mathbf{x}|y)p(y)}{p(\mathbf{x})} 
+\hat{\mathcal{Y}} = \mathcal{F}_{det}(\mathbf{X}; \Theta_{det}) = \left\{ (\mathbf{b}_i, c_i, p_i) \right\}_{i=1}^N
 \end{equation}
 
-论文里面公式越多，\TeX{} 就越 happy。再看一个 \textsf{amsmath} 的例子：
-\newcommand{\envert}[1]{\left\lvert#1\right\rvert} 
-\begin{equation}\label{detK2}
-\det\mathbf{K}(t=1,t_1,\dots,t_n)=\sum_{I\in\mathbf{n}}(-1)^{\envert{I}}
-\prod_{i\in I}t_i\prod_{j\in I}(D_j+\lambda_jt_j)\det\mathbf{A}
-^{(\lambda)}(\overline{I}|\overline{I})=0.
-\end{equation} 
+其中，$N$ 为影像中预测的目标总数；$c_i \in \{1, 2, \dots, C\}$ 为目标类别，具有概率 $p_i$；$\mathbf{b}_i = (x_i, y_i, w_i, h_i, \theta_i)$ 是具有五个自由度的几何描述符，分别表示第 $i$ 个预测框的中心点横纵坐标、宽度、高度及旋转角度（通常 $\theta_i \in [-\pi/2, \pi/2)$）。
 
-大家在写公式的时候一定要好好看\textsf{amsmath}的文档，并参考模板中的用法：
-\begin{multline*}%\tag{[b]} % 这个出现在索引中的
-\int_a^b\biggl\{\int_a^b[f(x)^2g(y)^2+f(y)^2g(x)^2]
- -2f(x)g(x)f(y)g(y)\,dx\biggr\}\,dy \\
- =\int_a^b\biggl\{g(y)^2\int_a^bf^2+f(y)^2
-  \int_a^b g^2-2f(y)g(y)\int_a^b fg\biggr\}\,dy
-\end{multline*}
+该映射的优化目标（损失函数）通常解耦为分类损失 $\mathcal{L}_{cls}$ 与几何回归损失 $\mathcal{L}_{reg}$。对于遥感目标，回归损失常采用基于旋转交并比（Rotated IoU）或二维高斯分布Wasserstein距离的度量：
 
-再看\ref{equ:split}:
-\begin{equation}\label{equ:split}
-\begin{split}
-C(z) &= [z^n] \biggl[\frac{e^{3/4}}{\sqrt{1-z}} +
-e^{-3/4}(1-z)^{1/2} + \frac{e^{-3/4}}{4}(1-z)^{3/2}
-+ O\Bigl( (1-z)^{5/2}\Bigr)\biggr] \\
-&= \frac{e^{-3/4}}{\sqrt{\pi n}} - \frac{5e^{-3/4}}{8\sqrt{\pi
-n^3}} + \frac{e^{-3/4}}{128 \sqrt{\pi n^5}} +
-O\biggl(\frac{1}{\sqrt{\pi
-n^7}}\biggr)
-\end{split}
+\begin{equation}
+\mathcal{L}_{reg}(\mathbf{b}, \hat{\mathbf{b}}) = 1 - \frac{|\mathbf{b} \cap \hat{\mathbf{b}}|}{|\mathbf{b} \cup \hat{\mathbf{b}}|} \quad \text{或} \quad \mathcal{W}_2^2(\mathcal{N}(\mathbf{\mu}_1, \mathbf{\Sigma}_1), \mathcal{N}(\mathbf{\mu}_2, \mathbf{\Sigma}_2))
 \end{equation}
 
-当然了，数学中必不可少的是定理和证明：
-\begin{theorem}
-  \label{chapTSthm:rayleigh solution}
-  假定 $X$ 的二阶矩存在:
-  \begin{equation}
-         O_R(\mathbf{x},F)=\sqrt{\frac{\mathbf{u}_1^T\mathbf{A}\mathbf{u}_1} {\mathbf{u}_1^T\mathbf{B}\mathbf{u}_1}}=\sqrt{\lambda_1},
-  \end{equation}
-  其中 $\mathbf{A}$ 等于 $(\mathbf{x}-EX)(\mathbf{x}-EX)^T$，$\mathbf{B}$ 表示协方差阵 $E(X-EX)(X-EX)^T$，$\lambda_1$
-$\mathbf{u}_1$是$\lambda_1$对应的特征向量，
-\end{theorem}
+其中，协方差矩阵 $\mathbf{\Sigma}$ 由 $(w, h, \theta)$ 通过旋转矩阵转换而来。该任务在轻量化过程中的核心理论难点是多尺度特征弥散：当网络通道数被大幅压缩时，对于高空极小目标（$w_i, h_i \to 0$），其在深层特征图上的高斯感受野响应会急剧衰减至零向量，导致梯度的梯度消失，无法进行有效的权重更新。
 
-对于希腊符号使用\verb|mathbf|命令可能有些问题，所以建议对符号
-用\verb|bm|加粗，记得用\verb|\up<greek>|切换正体符号，下面看几个例子：
-\verb|\gamma|斜体代表变量$\gamma$，\verb|\bm{\upgamma}|正体代表向量$\bm{\upgamma}$,
-。\verb|\Gamma|正体代表操作符号$\Gamma$，
-\verb|\bm{\Gamma}|正体粗体代表矩阵形式$\bm{\Gamma}$，
-\verb|\varGamma|斜体代表变量$\varGamma$。另外对于大小写斜体的加粗可以见$\bm{\gamma}$和$\bm{\varGamma}$，
-但是这两种科技论文中很少出现，这里只做测试。
-非符号普通向量就用\verb|\mathbf|吧：$\mathbf{x}_k,\mathbf{X}_k$。
-完整测试如下$\omega,\bm{\omega},\upomega,\bm{\upomega},\Omega,\bm{\Omega},\varOmega,\bm{\varOmega}$。
+\subsection{空间像素级感知（语义分割）的场分布模型}
 
-\begin{proof}
-上述优化问题显然是一个Rayleigh商问题。我们有
-  \begin{align}
-     O_R(\mathbf{x},F)=\sqrt{\frac{\mathbf{u}_1^T\mathbf{A}\mathbf{u}_1} {\mathbf{u}_1^T\mathbf{B}\mathbf{u}_1}}=\sqrt{\lambda_1},
- \end{align}
- 其中 $\lambda_1$ 下列广义特征值问题的最大特征值：
-$$
-\mathbf{A}\mathbf{z}=\lambda\mathbf{B}\mathbf{z}, \mathbf{z}\neq 0.
-$$
- $\mathbf{u}_1$ 是 $\lambda_1$对应的特征向量。结论成立。
-\end{proof}
+空间像素级感知旨在对遥感影像中的复杂地理拓扑结构（如受灾建筑、路网）进行密集的像素级分类，剥离背景干扰。其数学本质是一个全分辨率的空间场（Spatial Field）映射过程：
 
-下面来看看算法环境的定义和使用。
-我们知道，故障诊断的最终目的，是将故障定位到部件，而由于信号--部件依赖矩阵的存在，因此，实质性的工作是找出由故障部件发出异常信号，
-不妨称为源异常信号，而如前所述，源异常信号与异常信号依赖矩阵$\mathbf{S_a}$的全零列是存在一一对应的关系的。因此，我们只要获得了$\mathbf{S_a}$的全零列的相关信息，
-也就获得了源异常信号的信息，从而能进一步找到故障源。
-通过以上分析，我们构造算法\ref{alg53}，用于实现非回路故障诊断。
-\begin{algorithm}[htbp]
-  \caption{非回路故障诊断算法}
-  \label{alg53}
-  \begin{algorithmic}[1]
-    \REQUIRE 信号--部件依赖矩阵$\mathbf{A}$，信号依赖矩阵$\mathbf{S}$，信号状态向量$\alpha$
-    \ENSURE 部件状态向量$\gamma$
-    \STATE $\mathbf{P}\leftarrow\left(<\alpha>\right)$
-    \STATE $\mathbf{S_{a}}\leftarrow\mathbf{P^T}\mathbf{S}\mathbf{P}$
-    \FOR{$i=1$ to $S_a$的阶数$m$}
-    \STATE $s_i\leftarrow s_i$的第$i$个行向量
-    \ENDFOR
-    \STATE $\beta_a\leftarrow\lnot \left(s_1\lor s_2\lor \cdots\lor s_m\right)^T$
-    \STATE $\beta\leftarrow\mathbf{P}\beta_a$
-    \STATE $\gamma\leftarrow\mathbf{A}\beta$
-  \end{algorithmic}
-\end{algorithm}
+\begin{equation}
+\hat{\mathbf{S}} = \mathcal{F}_{seg}(\mathbf{X}; \Theta_{seg}), \quad \hat{\mathbf{S}} \in \mathbb{R}^{H \times W \times K}
+\end{equation}
 
-第一类故障回路推理与非回路故障推理是算法基本相同，稍微不同的是$\beta_a$的计算。因为第一类故障回路中的信号全部可能是源异常信号，因此我们不必计算
-$\beta_a=\lnot \left(\left[s_1\lor s_2\lor \cdots\lor s_m\right]^T\right)$，而直接取$\beta_a=\underbrace{\left[\begin{array}{cccc}1&1&\cdots&1\end{array}\right]^T}_m$，将$\beta_a$代入
-算法\ref{alg53}，有
-\[\beta=\mathbf{P}\beta_a=\mathbf{P}\underbrace{\left[\begin{array}{cccc}1&1&\cdots&1\end{array}\right]^T}_m=\alpha\]
-因此一类故障回路的推理算法变得相当简单，例如算法\ref{alg54}
-\begin{algorithm}[htbp]
-  \caption{第一类故障回路诊断算法}
-  \label{alg54}
-  \begin{algorithmic}[1]
-    \REQUIRE 信号--部件依赖矩阵$\mathbf{A}$，信号状态向量$\alpha$
-    \ENSURE 部件状态向量$\gamma$
-    \STATE $\gamma\leftarrow\mathbf{A}\alpha$
-  \end{algorithmic}
-\end{algorithm}
+对于图像空间域 $\Omega$ 中的每一个像素坐标 $(u, v)$，网络需输出一个经过Softmax归一化的概率分布向量 $\mathbf{P}(u, v) \in \Delta^{K-1}$（$K-1$维单纯形），其中 $K$ 为地物类别总数。
 
-\section{参考文献}
-\label{sec:bib}
-当然参考文献可以直接写 bibitem，虽然费点功夫，但是好控制，各种格式可以自己随意改
-写，在nudtpaper里面，建议使用JabRef编辑和管理文献，再结合\verb|bstutf8.bst|，
-对中文的支持非常不错，格式也很规范。
+其理论优化目标是在经验风险最小化框架下，最小化预测分布与真实One-hot分布 $\mathbf{Y}$ 之间的交叉熵（Cross Entropy）或Kullback-Leibler散度：
 
-本模板推荐使用 BIB\TeX，样式文件为 bstutf8.bst，符合学校的参考文献格式（如专利
-等引用未加详细测试）。看看这个例子，关于书的\upcite{tex, companion}，
-还有这些\upcite{Krasnogor2004e, clzs, zjsw}，关于杂志的\upcite{ELIDRISSI94,
-  MELLINGER96, SHELL02}，硕士论文\upcite{zhubajie, metamori2004}，博士论文
-\upcite{shaheshang, FistSystem01}，标准文件\upcite{IEEE-1363}，会议论文\upcite{DPMG,kocher99}，%
-技术报告\upcite{NPB2}。中文参考文献\upcite{cnarticle}\textsf{特别注意}，需要在\verb|bibitem|中
-增加\verb|language|域并设为\verb|zh|，英文此项可不填，之后由\verb|bstutf8|统一处理
-(具体就是决定一些文献在中英文不同环境下的显示格式，如等、etc)。
-若使用\verb|JabRef|，则你可按下面步骤来设置：
-选择\textsf{Options}$\rightarrow$\textsf{Set Up General Fields}，
-在\verb|General:|后加入\verb|language|就可以了。
+\begin{equation}
+\mathcal{L}_{seg} = -\frac{1}{|\Omega|} \sum_{(u,v) \in \Omega} \sum_{k=1}^K \mathbf{Y}_{k}(u,v) \log \left( \frac{\exp(\hat{\mathbf{S}}_{k}(u,v))}{\sum_{j=1}^K \exp(\hat{\mathbf{S}}_{j}(u,v))} \right)
+\end{equation}
 
-有时候不想要上标，那么可以这样 \cite{shaheshang}，这个非常重要。
+在基础视觉大模型（如Segment Anything Model, SAM）的应用范式下，该映射函数被拆解为强大的图像编码器 $\mathcal{E}$（通常为大型ViT）与轻量级的掩码解码器 $\mathcal{D}$，即 $\hat{\mathbf{S}} = \mathcal{D}(\mathcal{E}(\mathbf{X}), \text{Prompt})$。遥感影像的空间异质性使得直接利用自然图像预训练的 $\mathcal{E}$ 提取特征时，容易在拓扑边缘处产生不连续的阶跃误差（Step Error）。从信号处理的角度来看，这是由于深层网络作为低通滤波器（Low-pass Filter）滤除了遥感图像中的高频空间梯度（$\nabla \mathbf{X}$），因此亟需在模型微调中引入显式的频域高频约束。
 
-\section{代码高亮}
-有些时候我们需要在论文中引入一段代码，用来衬托正文的内容，或者体现关键思路的实现。
-在模板中，统一使用\texttt{listings}宏包，并且设置了基本的内容格式，并建议用户只
-使用三个接口，分别控制：编程语言，行号以及边框。简洁达意即可，下面分别举例说明。
+\subsection{光谱像素级感知（高光谱分类）的高维流形模型}
 
-首先是设定语言，来一个C的，使用的是默认设置：
-\begin{lstlisting}[language=C]
-void sort(int arr[], int beg, int end)
-{
-  if (end > beg + 1)
-  {
-    int piv = arr[beg], l = beg + 1, r = end;
-    while (l < r)
-    {
-      if (arr[l] <= piv)
-        l++;
-      else
-        swap(&arr[l], &arr[--r]);
-    }
-    swap(&arr[--l], &arr[beg]);
-    sort(arr, beg, l);
-    sort(arr, r, end);
-  }
-}
-\end{lstlisting}
+高光谱图像（Hyperspectral Image, HSI）是一个包含了数百个连续狭窄波段的三维数据立方体 $\mathbf{X}_{hsi} \in \mathbb{R}^{H \times W \times B}$，其中 $B$ 为光谱波段数（通常 $B \ge 100$）。光谱像素级感知提取每一像元的光谱向量 $\mathbf{x} \in \mathbb{R}^B$，并利用空谱联合邻域 $\mathcal{N}(\mathbf{x})$ 映射至地物类别集合。
 
-当我们需要高亮Java代码，不需要行号，不需要边框时，可以：
-\begin{lstlisting}[language=Java,numbers=none,frame=none]
-// A program to display the message
-// "Hello World!" on standard output
+高光谱数据的核心理论挑战是统计学习理论中的**"Hughes现象"（维度灾难, Curse of Dimensionality）**。根据高维几何空间特性，当波段维度 $B$ 趋于无穷时，高维超球体的体积趋于零，样本点分布趋于超球体的表面，导致任意两点间的欧氏距离变得相近。设训练样本数为 $M$，分类器的泛化误差界（Generalization Error Bound）不仅与 $M$ 成反比，更与维度 $B$ 呈指数级正相关。如果直接在 $\mathbb{R}^B$ 空间进行全连接或3D卷积映射，分类器会迅速过拟合。
 
-public class HelloWorld {
- 
-   public static void main(String[] args) {
-      System.out.println("Hello World!");
-   }
-      
-}   // end of class HelloWorld
-\end{lstlisting}
+因此，从底层突破高光谱感知算力爆炸和维数灾难的关键，是设计一个数学上严密的稀疏降维变换算子 $\mathcal{T}: \mathbb{R}^B \to \mathbb{R}^d$（且 $d \ll B$），使得映射后的低维流形空间最大程度地保留原始类间的Fisher判别信息。
 
-细心的用户可能发现，行号被放在了正文框之外，事实上这样是比较美观的，
-如果有些用户希望在正文框架之内布置所有内容，可以：
-\begin{lstlisting}[language=perl,xleftmargin=2em,framexleftmargin=1.5em]
-#!/usr/bin/perl
-print "Hello, world!\n";
-\end{lstlisting}
+\section{边缘计算部署中的硬件约束与复杂度评价体系}
 
-好了，就这么多，\texttt{listings}宏包的功能很强大也很复杂，如果需要自己定制，
-可以查看其手册，耐心阅读总会找到答案。
-\textbf{注意:} 当前代码环境中文注释的处理还不是很完善，对于注释请妥善处理。
-在本模板中，推荐算法环境或者去掉中文的listings代码环境。
-如果需要包含中文注释，不要求代码高亮，
-就用\texttt{code}环境，这个环境是Verbatim的定制版，简单有效，
-调用的是fancyvbr宏包，用户可在mynudt.sty中修改它的外观等等。
-这里我们还可以给代码加上标签。
-\begin{code}[label=hello.c]
-public class HelloWorld {
-   public static void main(String[] args) {
-      System.out.println("Hello World!");
-   }
-}   // 世界，你好！
-\end{code}
+为了将多粒度感知算法有效部署至机载边缘控制芯片（如NVIDIA Jetson系列、FPGA），必须摒弃传统学术界单一唯精度论（仅关注mAP或OA）的评价准则，建立一套基于Roofline模型的三维硬件约束评价体系。
 
-\section{符号列表}
+\subsection{时间复杂度：浮点运算量（FLOPs）}
 
-{\hei 前面的话：}{\kai\color{blue} 
-2.2版本后默认使用nomencl环境，如果你还是希望使用传统的\verb|definition.tex|，那么只需注释掉
-顶层文件中的nomenclature即可。}
+FLOPs (Floating Point Operations) 衡量算法在执行一次前向推理时所需的理论乘加操作数。对于一个输入通道数为 $C_{in}$，输出通道数为 $C_{out}$，卷积核空间尺寸为 $K \times K$，输出特征图大小为 $H \times W$ 的标准2D卷积层，其理论计算量近似为：
 
-符号列表使用的是\verb|nomencl|包，自己简单定制了下，使用方法分为四步：
-\begin{compactenum}
-\item 将\verb|\makenomenclature|语句放在正文前，即\verb|\begin{document}|前面；
-\item 将\verb|\printnomenclature|放在论文中，我在例子中将符号列表放在了英文摘要的
-后面，正文第一章的前面，当然，你可以根据自己的需要或者教研室的规范放置在合理的位置上，
-为了页面引用的正确，在这句话前面放上\verb|\cleardoublepage|；
-\item 使用\verb|\nomenclature|命令在论文的各个位置上添加符号定义，语法后面会讲到；
-\item 编译。编译需要首先运行一遍xelatex，之后运行
-\begin{code}
-makeindex -s nomencl.ist -o thesis.nls thesis.nlo
-\end{code}
-\end{compactenum}
+\begin{equation}
+\text{FLOPs}_{conv} = 2 \times K^2 \times C_{in} \times C_{out} \times H \times W
+\end{equation}
 
-你可以把这句编译命令放在\verb|makepdf.bat|中第一个\verb|xelatex thesis|下面。然后
-双击\verb|makepdf.bat|就可以了，论文模板中已经为你添加上了，如果你强烈不想使用
-nomencl环境，只要把它注释掉（前面加\verb|rem|）就可以。
-另外，由于我使用的是VIM来编辑\TeX{}代码，具体到每个编辑器（诸如WinEDT，TeXWorks等）
-如何设定该命令的快捷按钮，诸位可以搜索网上的教程。
+对于Transformer中的多头自注意力（Multi-Head Self-Attention, MHSA）机制，假设输入序列长度为 $L = H \times W$，隐藏层维度为 $D$，其复杂度为：
 
-下面简单说明下\verb|\nomenclature|命令，语法为。这里插入一些随机的文字，希望
-对你在阅读帮助中的思维没有什么不良的影响。
-\begin{code}
-\nomenclature[<prefix>]{<symbol>}{<desc>}{<null>}
-\end{code}
-\verb|nomencl|模板的默认排序方法可能（大多都）不满足要求，
-论文模板里，我们通过设定\verb|<prefix>|来实现符号列表的排序。
-它分为两部分，比如如\verb|[Aa]|，第一个字母的含义是：
-\begin{compactitem}
-\item[`A'] 符号归为拉丁字母
-\item[`G'] 希腊字母
-\item[`X'] 上标
-\item[`Z'] 下标
-\end{compactitem}
-每个标识后边的字幕\verb|a-z|作为当前符号组内的排列顺序，比如$\beta$就可以写成
-\verb|[Gb]|，诸如此类。当然你一定注意到了，这个排序分组的设定只是为了记忆
-方便，并不是强制的，因此你可以有自己的方案，比如Z是Greek，
-R是Roman什么的，只要统一就好，只需记住，组间排列是按字母顺序排的。
+\begin{equation}
+\text{FLOPs}_{attention} \approx 4 L D^2 + 2 L^2 D
+\end{equation}
 
-注意符号表分四列，前三列的含义与命令中相同，
-最后一列是符号定义时所在的页码。效果看例子，对于下式:
-\begin{equation}\label{eq:heatflux}
-   \dot{Q} = k \cdot A \cdot \Delta T
-\end{equation}%
-\nomenclature[Aq]{$\dot{Q}$}{heat flux}{}%
-\nomenclature[Ak]{$k$}{overall heat transfer coefficient,式\eqref{eq:ohtc}}{}%
-\nomenclature[Aa]{$A$}{area}{}%
-\nomenclature[Al]{$L$}{length}{}%
-\nomenclature[At]{$T$}{temperature}{}%
-\nomenclature[At]{$\Delta T$}{temperature difference}{}%
-\nomenclature[Gr]{$\gamma$}{中文测试, 以及一句很长的物理意义，很有可能超过当前栏的宽度，主要目的是看一看会不会出现某些异常情况。}{}%
+可以看出，自注意力机制存在相对于输入分辨率 $L$ 的二次方复杂度 $\mathcal{O}(L^2)$。在机载边缘设备上，算力峰值（Peak Performance）通常被物理限制在几十至百GFLOPs量级，因此必须严格控制网络的理论算力需求。
 
-或者:
-\begin{equation}\label{eq:ohtc}
-    \frac{1}{k} = \left[\frac{1}{\alpha _{\mathrm{i}}\,r_{\mathrm{i}}} +
-    \sum^n_{j=1}\frac{1}{\lambda _j}\,
-    \ln \frac{r_{\mathrm{a},j}}{r_{\mathrm{i},j}} +
-    \frac{1}{\alpha _{\mathrm{a}}\,
-    r_{\mathrm{a}}}\right] \cdot r_{\mathrm{reference}}
-\end{equation}%
-\nomenclature[Ga]{$\alpha$}{convection heat transfer coefficient}{}%
-\nomenclature[Zi]{i}{in}{}%
-\nomenclature[Gl]{$\lambda$}{thermal conductivity}{}%
-\nomenclature[Za]{a}{out}{}%
-\nomenclature[Zn]{$n$}{number of walls}{}%
-\nomenclature[Zj]{$j$}{running parameter}{}%
+\subsection{空间复杂度：参数规模（Params）与显存占用}
 
-{\hei 注意事项：}{\kai 模板中定制的nomencl格式在mynudt.sty中，默认是三栏的，分别是：
-``符号''，``定义''，``首次出现页码''，
-注意这里的符号列表都没有单位，如果你需要额外的栏输入单位（呵呵，聪明的读者可能看出来
-了，\verb|nomenclature|命令最后一个是空的，就是用来让你赋予她各种意义的）。
-此时就需要你有一点点动手能力了（其实只要会修改表格就行），
-方法很简单，比如需要添加``国际单位制''这一栏，则
-\begin{compactenum}
-\item 论文中\verb|\nomenclature|命令的第三个参数就让他代表单位，也可留空；
-\item 将\verb|mynudt.sty|中longtable的表头添加``国际单位制''几个字，
-你也可以取其他的名字，放在那个{\kai 应该出现的}位置上；
-\item 由于增加了5个字，就把前面栏的宽度数字减5，同时设定第三栏宽度为5，
-注意这一步需要你自己调整，记得不要让表格超出边界就行。
-\end{compactenum}
-}
+参数量（Params）衡量算法静态结构的大小。对于上述标准卷积层，其参数量为：
 
-\section{中文习惯}
-\label{sec:chinese}
+\begin{equation}
+\text{Params}_{conv} = K^2 \times C_{in} \times C_{out} + C_{out}
+\end{equation}
 
-对于itermize过大的行间距，用户可以使用compactitem环境来替代，但是模板中不进行默认替代，
-因为只有用户真正发现列表不好看才会找到这里，而且在示例文件中，
-陈赓大将那个列表环境如果压缩了行距会很不好看。谢谢ZhangLei的建议！
+参数量直接决定了模型文件在机载存储器（如eMMC、Flash）中的占用大小。更为关键的是，模型在推理过程中的**激活显存（Activation Memory）**占用。高分辨率遥感影像在经过浅层网络时会产生庞大的激活张量张量池，极易触发边缘设备的显存溢出（Out of Memory, OOM）异常。
 
-{\hei 一个重要的提示：}
-作者自己的定义命令、包等，不要放在模板里面，请放到\verb|mynudt.sty|
-中，这样模板时，只要覆盖\verb|nudtpaper.cls|即可。
+\subsection{算力-访存瓶颈：算术强度（Arithmetic Intensity）与延迟}
 
-中文破折号为一个两个字宽垂直居中的直线，输入法直接得到的破折号是两个断开的小短线
-（——），这看起来不舒服。所以模板中定义了一个破折号的命令 \verb|\pozhehao|，请看：
+理论计算量低并不绝对意味着推理速度快。根据体系结构中的 Roofline模型，边缘设备的实际性能 $\mathcal{P}$（单位：GFLOPS）受到理论峰值算力 $\mathcal{P}_{max}$ 和最大内存带宽 $\beta$（单位：GB/s）的双重制约。
 
-厚德博学，强军兴国\hfill \pozhehao{}国防科大校训
+定义模型的算术强度 $I$ 为总浮点运算量与内存访问量（Memory Access Cost, MAC）的比值：
+
+\begin{equation}
+I = \frac{\text{FLOPs}}{\text{MAC}} \quad \text{(FLOPs/Byte)}
+\end{equation}
+
+设备的转折点算术强度为 $I_{ridge} = \mathcal{P}_{max} / \beta$。
+
+\textbf{内存受限区（Memory-bound）：} 当 $I < I_{ridge}$ 时，模型性能 $\mathcal{P} = I \times \beta$。此时，即便模型FLOPs极低，但由于频繁读取参数和激活值耗尽了总线带宽，推理延迟（Latency）依然很高。例如，过度稀疏的非结构化剪枝网络往往落入此区域。
+
+\textbf{计算受限区（Compute-bound）：} 当 $I \ge I_{ridge}$ 时，模型性能才能达到硬件峰值 $\mathcal{P}_{max}$。
+
+因此，本文在进行仿生轻量化设计时，必须在降低FLOPs的同时，保证网络结构的规整性（如采用结构化剪枝或密集的原生轻量算子），以维持较高的算术强度，真正降低物理推理延迟。
+
+\section{深度视觉模型的轻量化演进机理}
+
+面对上述严苛的硬件边界约束，深度学习轻量化理论演化出了多种范式。本文后续的研究将基于以下三种核心机理进行深度拓展：
+
+\subsection{模型压缩：基于泰勒展开与范数的网络稀疏化机理}
+
+网络剪枝（Network Pruning）的核心假设是过度参数化（Over-parameterization）的深度网络中存在大量对于损失函数贡献极小的"冗余权重"。
+
+从优化的角度来看，假设预训练模型的权重向量为 $\mathbf{W}^*$，剪枝引起权重的微小扰动 $\Delta \mathbf{W}$。将损失函数 $\mathcal{L}$ 在 $\mathbf{W}^*$ 处进行二阶泰勒展开（Taylor Expansion）：
+
+\begin{equation}
+\delta \mathcal{L} \approx \nabla \mathcal{L}^T \Delta \mathbf{W} + \frac{1}{2} \Delta \mathbf{W}^T \mathbf{H} \Delta \mathbf{W}
+\end{equation}
+
+其中，$\mathbf{H}$ 为Hessian矩阵。由于模型处于局部极小值，一阶梯度 $\nabla \mathcal{L} \approx \mathbf{0}$，因此权重去除引起的损失变化主要由Hessian项决定。由于计算全量Hessian矩阵代价过高，结构化剪枝通常采用一阶近似的启发式规则。
+
+常见的结构化通道剪枝通过在损失函数中引入关于Batch Normalization (BN) 层缩放因子 $\gamma \in \Gamma$ 的 $\ell_1$ 范数稀疏正则化项：
+
+\begin{equation}
+\mathcal{L}_{total} = \mathcal{L}_{task}(\mathcal{F}(\mathbf{X}; \mathbf{W}, \Gamma), \mathbf{Y}) + \lambda \sum_{\gamma \in \Gamma} |\gamma|
+\end{equation}
+
+当模型收敛后，将 $|\gamma|$ 小于给定阈值的通道（及其对应的滤波器）物理移除。然而，传统的全局静态阈值剪枝存在致命缺陷：它忽略了深层网络中多尺度特征表示的流动性，粗暴的截断极其容易造成遥感小目标特征的"灾难性遗忘"。
+
+\subsection{参数高效微调：低秩空间映射机理}
+
+参数高效微调（Parameter-Efficient Fine-Tuning, PEFT）旨在解决拥有数十亿参数的基础大模型无法在下游任务中全量微调（Full Fine-Tuning）的困境。其底层数学机理假设：预训练大模型的过度参数化表征空间具有极低的内在秩（Intrinsic Rank）。
+
+例如，LoRA (Low-Rank Adaptation) 机制冻结预训练权重矩阵 $\mathbf{W}_0 \in \mathbb{R}^{d \times k}$，通过引入两个极小的低秩矩阵 $\mathbf{A} \in \mathbb{R}^{d \times r}$ 和 $\mathbf{B} \in \mathbb{R}^{r \times k}$ 来近似目标域的参数更新（其中秩 $r \ll \min(d, k)$）：
+
+\begin{equation}
+\mathbf{h} = \mathbf{W}_0 \mathbf{x} + \Delta \mathbf{W} \mathbf{x} = \mathbf{W}_0 \mathbf{x} + \mathbf{A} \mathbf{B} \mathbf{x}
+\end{equation}
+
+此时，微调过程仅需优化参数集合 $\{\mathbf{A}, \mathbf{B}\}$，将梯度更新的显存开销降低了数个数量级。而Adapter机制则通过引入带有非线性激活函数 $\sigma$ 的下采样（投影矩阵 $\mathbf{W}_{down}$）和上采样（投影矩阵 $\mathbf{W}_{up}$）瓶颈结构：$\mathbf{h}' = \mathbf{h} + \mathbf{W}_{up}\sigma(\mathbf{W}_{down}\mathbf{h})$。
+
+尽管PEFT在自然语言中极为成功，但直接将其应用于遥感图像的大模型微调时，简单的线性投影矩阵难以补偿下采样过程中丢失的空间高频梯度信息。
+
+\subsection{轻量化算子的张量解耦机理}
+
+利用深度可分离卷积（Depthwise Separable Convolution）等轻量化算子，其本质是将标准的致密三维卷积张量操作进行秩一分解（Rank-1 Decomposition）。它将标准卷积解耦为：
+
+\textbf{逐通道空间卷积（Depthwise Convolution）：} 仅在二维空间域操作，参数为 $K \times K \times C_{in}$。
+
+\textbf{逐点跨通道卷积（Pointwise Convolution）：} 即 $1 \times 1$ 卷积，仅在通道域进行线性组合。
+
+通过这种张量解耦，计算复杂度被压缩了 $\frac{1}{C_{out}} + \frac{1}{K^2}$ 倍。然而，对于输入通道 $C_{in}$ 极大的高光谱遥感数据，这种算子级别的线性优化仍然受限于维度的绝对值，无法从根本上消除输入端的维数灾难。
+
+\section{视觉仿生学与计算神经科学的先验基础}
+
+自然界的生物经历了亿万年的自然选择进化，其神经中枢与视觉感知系统能够在消耗极低生物能（例如，人类大脑的峰值功率约为20W，而昆虫的大脑功耗仅在微瓦级别）的情况下，实时、极其稳健地处理充满高频噪声的外部多模态物理信号。将这种**"生物学上的节能法则与高效特征提取机理"**抽象为严格的数学模型，并跨学科地引入计算视觉与最优化求解中，是本文打破传统轻量化瓶颈的核心理论先验。
+
+\subsection{神经突触可塑性与分形稀疏理论}
+
+在神经生物学中，哺乳动物大脑的发育伴随着剧烈的"突触修剪（Synaptic Pruning）"。突触可塑性遵循赫布学习法则（Hebbian Learning Rule）："Fire together, wire together"。神经元的突触权重 $\mathbf{w}$ 随突触前神经元激活 $\mathbf{x}$ 和突触后神经元激活 $\mathbf{y}$ 的相关性动态演化：
+
+\begin{equation}
+\frac{d\mathbf{w}}{dt} = \eta \mathbf{y} \mathbf{x} - f(\mathbf{w}, \mathbf{y})
+\end{equation}
+
+其中 $f(\cdot)$ 为衰减项（如Oja法则中的归一化约束）。大脑利用长时程抑制（Long-Term Depression, LTD）自适应地切断那些激活频率低、携带信息少的微弱突触连接，从而在维持强大认知网络的同时，将系统熵维持在最低水平。
+
+同时，大脑皮层的拓扑结构展现出显著的分形特征（Fractal Characteristics），即局部网络在不同的缩放尺度下表现出与整体相似的自相似性（Self-similarity），其Hausdorff维度是一个非整数。
+
+对本文（第三章）的理论指导： 在网络剪枝中，粗暴的全局静态阈值有悖于大脑的柔性演化规律。若能模拟突触可塑性，构建具有分形特性的动态门控函数（Fractal Gating Function），在反向传播中递归地评估特征通道的重要性权重，便能指导深度模型进行自适应的稀疏化演进。这为解决大模型压缩中小目标多尺度特征极易被"剪断"的难题，提供了一种由数据驱动的柔性特征路由解法。
+
+\subsection{人类视觉系统（HVS）的空间-频率双域协同理论}
+
+神经生理学实验（如Hubel与Wiesel的猫视觉皮层实验）表明，灵长类动物初级视皮层（V1区）的简单细胞感受野可以用带有不同方向与频率的二维Gabor滤波器组精确拟合。更为重要的是，人类视觉系统存在对比度敏感度函数（Contrast Sensitivity Function, CSF），对空间信号呈现出强烈的带通选择性。
+
+人类在解析复杂场景时，大脑的视觉通路潜意识地进行了信号的频空正交解耦：
+
+\textbf{利用低频信号}（对应平缓的亮度渐变）在大脑的背侧通路（Dorsal Stream）快速构建场景的全局结构、轮廓与深度。
+
+\textbf{利用高频信号}（对应急剧的梯度突变）在腹侧通路（Ventral Stream）敏锐捕捉物体的纹理与精细边缘。
+
+根据二维连续傅里叶变换（2D-CFT）原理，遥感图像的空间域矩阵 $f(x,y)$ 与频域矩阵 $\mathcal{F}(u,v)$ 存在如下映射：
+
+\begin{equation}
+\mathcal{F}(u,v) = \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} f(x,y) e^{-j 2\pi (ux+vy)} dx dy = R(u,v) + j I(u,v) = |\mathcal{F}(u,v)| e^{j \phi(u,v)}
+\end{equation}
+
+其中，幅值谱 $|\mathcal{F}(u,v)|$ 反映了图像的频率能量分布（低频多分布在中心，高频在边缘），而相位谱 $\phi(u,v)$ 蕴含了极其关键的空间位置与结构几何信息。
+
+对本文（第四章）的理论指导： 视觉大模型（SAM）为了获取全局语义，其密集的下采样操作相当于一个低通滤波器，过度滤除了高频细节。借鉴HVS机制，若能在适配微调中引入快速傅里叶变换（FFT），在频域空间内显式分离出低频的几何拓扑拓扑与高频的边缘梯度，并与空域特征进行双域协同融合（Dual-domain Synergy），必将以极低的算子开销，赋予冻结权重的视觉大模型极其敏锐的破碎边缘感知能力。
+
+\subsection{昆虫复眼光谱选择性与信息瓶颈理论}
+
+以蜜蜂为代表的膜翅目昆虫，其大脑神经元数量极少（不足人类的百万分之一），却具备令人惊叹的光谱鉴别与视觉导航能力。昆虫神经行为学揭示，蜜蜂复眼中的光感受器并未像人工高光谱传感器那样去采集连续的数百个频段，而是仅对自然界中与其生存（如寻花蜜）息息相关的特定宽频段（紫外、蓝光、绿光）产生强烈的动作电位响应。
+
+这种"自适应光谱选择性注意力"机制，在信息论（Information Theory）中完美契合了信息瓶颈理论（Information Bottleneck, IB）。设输入高维光谱数据为随机变量 $X$，目标标签为 $Y$，提取的紧凑特征表示为 $Z$。IB理论的目标是在最大化 $Z$ 与 $Y$ 互信息 $I(Z;Y)$ 的同时，最小化 $Z$ 与 $X$ 的互信息 $I(Z;X)$（即过滤冗余噪声）：
+
+\begin{equation}
+\min_{p(z|x)} \mathcal{L}_{IB} = I(Z;X) - \beta I(Z;Y)
+\end{equation}
+
+其中，互信息 $I(Z;Y) = \mathcal{H}(Y) - \mathcal{H}(Y|Z)$，$\mathcal{H}(\cdot)$ 为香农熵（Shannon Entropy）。蜜蜂的视觉神经系统正是自然界中实现该优化目标的完美物理实体：它通过硬连线的神经通路，直接在传感器端掐断了低信息熵的频段，仅保留判别性极高的"黄金波段"。
+
+对本文（第五章）的理论指导： 针对高光谱遥感数据指数级爆炸的计算维数灾难，必须摒弃深度学习惯用的"先全量编码、再在网络后端降维"的重型范式。通过将其抽象为极简数学模型，在神经网络的最前端植入基于互信息或交叉熵梯度的"动态门控选择器"，强行模拟蜜蜂的光谱稀疏截断机制，是实现"计算前置"，将前向推理算力下限压缩至 KB 级别（$<100$ KFLOPs）的最根本理论途径。
+
+\section{本章小结}
+
+本章从数学空间映射、硬件物理约束以及生物学底层法则的多维交叉视角，为整篇学位论文的算法设计构筑了严密、完备的理论地基。首先，通过构建带约束的优化目标，严格定义了实例级检测、空间像素级分割以及光谱像素级分类三种多粒度任务的函数模型；引入Roofline评价体系，揭示了机载边缘设备中FLOPs、参数量与访存带宽限制算力发挥的真实根源。其次，利用泰勒展开、矩阵低秩近似以及张量解耦等数学工具，深度剖析了现行模型压缩、微调及算子轻量化理论的运行机理及其在面临极端算力与遥感复杂特征冲突时的技术天花板。最后，创造性地梳理了神经突触可塑性与分形理论、人类视觉频空双域协同理论以及昆虫复眼信息瓶颈先验。这些跨越计算神经科学与信息论的仿生法则，不仅在哲学层面揭示了低功耗、高鲁棒智能感知系统的终极形态，更在随后的数学演绎中，为突破遥感轻量化解译的技术死局提供了直接的方法论钥匙。
 

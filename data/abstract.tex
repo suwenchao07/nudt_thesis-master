@@ -1,21 +1,27 @@
 \begin{cabstract}
-国防科技大学是一所直属中央军委的综合性大学。1984年,学校经国务院、中央军委和教育部批准首批成立研究生院，%
-肩负着为全军培养高级科学和工程技术人才与指挥人才，培训高级领导干部，从事先进武器装备和国防关键技术研究的重要任务。%
-国防科技大学是全国重点大学，也是全国首批进入国家“211工程” 建设并获中央专项经费支持的全国重点院校之一。%
-学校前身是1953年创建于哈尔滨的中国人民解放军军事工程学院，简称“哈军工”。
+随着无人机等空天遥感平台的普及，机载边缘设备上的实时智能解译需求日益增长。然而，由于边缘端芯片的算力、功耗与内存极度受限，现有的高精度深度学习模型（尤其是视觉基础模型）难以直接部署。同时，遥感感知任务正向多粒度（实例级、空间像素级、光谱像素级）演进，进一步加剧了“极限算力瓶颈”与“复杂感知需求”之间的矛盾。为解决这一难题，本文从生物视觉系统的高效能机理中汲取灵感，提出了一套面向机载算力受限场景的遥感影像多粒度轻量化感知方法。针对不同模型初始状态和任务维度，本文分别探索了“模型压缩、大模型微调、极简原生设计”三种轻量化范式，主要研究内容与创新成果如下：
+
+（1）针对实例级感知中重型模型参数冗余与小目标漏检问题，提出了基于突触分形剪枝的轻量化目标检测方法（LiteFM-RSDet）。 该方法聚焦“模型压缩”范式，模拟生物神经突触的可塑性与修剪机制，设计了分形门控函数动态剔除对宏观目标定位无用的冗余特征通道。同时，结合多分辨率流形路由（MMR）实现跨尺度的稀疏特征分配，有效缓解了高空俯视视角下小目标的特征丢失。实验表明，该模型在显著压缩参数量（28.3M）的同时，保持了极高的检测精度与推理帧率，满足了边缘端对实例级目标的实时搜寻需求。
+
+（2）针对空间像素级感知中大模型难以微调与细粒度边缘丢失问题，提出了结合频空协同的大模型参数高效微调方法（FourierPDC-SAM）。 该方法聚焦“基础模型适配”范式，在冻结Segment Anything Model (SAM) 庞大主干网络的前提下，引入像素差分卷积（PDC）局部感知模块以提取微小梯度变化，补偿高频细节；并利用傅里叶频域增强（FE）分离空间结构信息。通过轻量化适配器（Adapter）的频空协同融合，该方法以极少的参数增量，大幅提升了模型在复杂形态（如受损建筑物轮廓）上的零样本/少样本分割精度，实现了大模型的低成本机载泛化。
+
+（3）针对光谱像素级感知中高维数据冗余与算力呈指数级膨胀问题，提出了模拟蜜蜂视觉机制的原生极简高光谱分类架构（BioLiteNet）。 该方法聚焦“原生轻量化设计”范式，针对高光谱数据数百个波段带来的“维度灾难”，设计了蜂感选择器（BeeSenseSelector）。该模块模拟蜜蜂寻找花蜜时的稀疏注意力机制，实现计算前置的动态光谱降维，仅保留最具判别力的“黄金波段”。结合多尺度仿射卷积进行联合特征提取，该方法将计算复杂度极限压缩至近90K FLOPs量级，并在极小样本条件下展现出卓越的材质判别鲁棒性。
+
+综上所述，本文构建了涵盖“压缩-适配-原生设计”的多粒度轻量化遥感解译理论与方法体系。研究成果不仅在算法底层突破了深度视觉模型在边缘端部署的算力壁垒，更为未来空天一体化智能感知系统的研发提供了重要的理论依据与技术支撑。
 \end{cabstract}
-\ckeywords{国防科技大学; 211; 哈军工}
+\ckeywords{遥感解译；多粒度感知；边缘计算；模型轻量化；仿生视觉；视觉基础模型}
 
 \begin{eabstract}
-National University of Defense Technology is a comprehensive national key university based in Changsha, %
-Hunan Province, China. It is under the dual supervision of the Ministry of National Defense %
-and the Ministry of Education, designated for Project 211 and Project 985, %
-the two national plans for facilitating the development of Chinese higher education. %
+With the proliferation of aerospace remote sensing platforms such as Unmanned Aerial Vehicles (UAVs), the demand for real-time intelligent interpretation on airborne edge devices is growing rapidly. However, due to the severe constraints on computing power, energy consumption, and memory of edge chips, existing high-precision deep learning models (especially Vision Foundation Models) are difficult to deploy directly. Meanwhile, remote sensing perception tasks are evolving towards multi-granularity (instance-level, spatial pixel-level, and spectral pixel-level), further exacerbating the contradiction between "extreme computational bottlenecks" and "complex perception requirements." To address this challenge, drawing inspiration from the highly efficient mechanisms of biological visual systems, this thesis proposes a suite of multi-granularity lightweight perception methods for remote sensing imagery tailored for airborne compute-constrained scenarios. Targeting different initial model states and task dimensions, this thesis explores three lightweight paradigms: "model compression, foundation model fine-tuning, and minimalist native design." The main research contents and innovative contributions are as follows:
 
-NUDT was originally founded in 1953 as the Military Academy of Engineering in Harbin of Heilongjiang Province. %
-In 1970 the Academy of Engineering moved southwards to Changsha and was renamed Changsha Institute of Technology.%
- The Institute changed its name to National University of Defense Technology in 1978.
+(1) Aiming at the parameter redundancy of heavy models and the missed detection of small objects in instance-level perception, a lightweight object detection method based on Synaptic Fractal Pruning (LiteFM-RSDet) is proposed. Focusing on the "model compression" paradigm, this method simulates the plasticity and pruning mechanism of biological neural synapses. It designs a fractal gating function to dynamically eliminate redundant feature channels that are useless for macro-object localization. Simultaneously, combining Multi-resolution Manifold Routing (MMR) to achieve cross-scale sparse feature allocation, it effectively alleviates the loss of small object features under high-altitude overlooking perspectives. Experiments show that this model significantly compresses the number of parameters (28.3M) while maintaining extremely high detection accuracy and inference frame rates, meeting the real-time search requirements for instance-level targets on the edge.
+
+(2) Aiming at the difficulty of fine-tuning foundation models and the loss of fine-grained edges in spatial pixel-level perception, a parameter-efficient fine-tuning method combining spatial-frequency synergy (FourierPDC-SAM) is proposed. Focusing on the "foundation model adaptation" paradigm, while freezing the massive backbone of the Segment Anything Model (SAM), a Pixel Difference Convolution (PDC) local perception module is introduced to extract minute gradient changes and compensate for high-frequency details. A Fourier Frequency-domain Enhancement (FE) is utilized to separate spatial structural information. Through the spatial-frequency synergistic fusion of lightweight Adapters, this method significantly improves the zero-shot/few-shot segmentation accuracy of the model on complex morphologies (such as damaged building outlines) with minimal parameter increments, realizing the low-cost airborne generalization of foundation models.
+
+(3) Aiming at the high-dimensional data redundancy and exponential expansion of computing power in spectral pixel-level perception, a native minimalist hyperspectral classification architecture simulating the bee vision mechanism (BioLiteNet) is proposed. Focusing on the "native lightweight design" paradigm, to address the "curse of dimensionality" brought by hundreds of bands in hyperspectral data, a BeeSenseSelector is designed. This module simulates the sparse attention mechanism of bees when foraging, achieving computation-preposed dynamic spectral dimensionality reduction and retaining only the most discriminative "golden bands." Combined with multi-scale affine convolution for joint feature extraction, this method compresses the computational complexity to the extreme level of nearly 90K FLOPs and demonstrates outstanding material discrimination robustness under extremely small sample conditions.
+
+In summary, this thesis constructs a multi-granularity lightweight remote sensing interpretation theory and methodology system covering "compression, adaptation, and native design." The research results not only break through the computational barriers for deploying deep vision models on the edge at the algorithm level but also provide important theoretical basis and technical support for the future development of air-space integrated intelligent perception systems.
 
 \end{eabstract}
-\ekeywords{NUDT; MND; ME}
+\ekeywords{Remote Sensing Interpretation; Multi-granularity Perception; Edge Computing; Model Lightweighting; Biomimetic Vision; Vision Foundation Models}
 

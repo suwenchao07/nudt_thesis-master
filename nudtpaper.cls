@@ -74,17 +74,17 @@
 \RequirePackage[Symbolsmallscale]{upgreek}
 \interdisplaylinepenalty=2500
 \RequirePackage{bm}
-\RequirePackage[T1]{fontenc}
+% \RequirePackage[T1]{fontenc} % Removed: incompatible with XeLaTeX
 \RequirePackage[amsmath,thmmarks,hyperref]{ntheorem}
-\RequirePackage[CJKchecksingle,no-math]{xeCJK}
+\RequirePackage{xeCJK}
 \RequirePackage{zhnumber}
 \RequirePackage{indentfirst}
 \RequirePackage[numbers,sort&compress,square]{natbib}
 \RequirePackage[colorlinks=true,linkcolor=blue,citecolor=red,pdfborder=0 1 1]{hyperref}
 \RequirePackage{datetime}
-\defaultfontfeatures{Mapping=tex-text}
-\xeCJKsetcharclass{"0}{"2E7F}{0}
-\xeCJKsetcharclass{"2E80}{"FFFF}{1}
+\defaultfontfeatures{Ligatures=TeX}
+% \xeCJKsetcharclass{"0}{"2E7F}{0}  % Removed: deprecated in newer xeCJK
+% \xeCJKsetcharclass{"2E80}{"FFFF}{1}  % Removed: deprecated in newer xeCJK
 
 % ttf字体 (Windows)
   \newcommand{\installttf}{
@@ -140,20 +140,46 @@
 }
 
 \newcommand{\installfandol}{
-    %%%% Windows Thesis Fonts
-    \setmainfont{Times New Roman}
-    \setsansfont{Arial}
-    \setmonofont{Courier New}
+    %%%% Thesis Fonts (TeX Gyre, cross-platform)
+    \setmainfont{texgyretermes}[
+      Extension=.otf,
+      UprightFont=*-regular,
+      BoldFont=*-bold,
+      ItalicFont=*-italic,
+      BoldItalicFont=*-bolditalic,
+    ]
+    \setsansfont{texgyreheros}[
+      Extension=.otf,
+      UprightFont=*-regular,
+      BoldFont=*-bold,
+      ItalicFont=*-italic,
+      BoldItalicFont=*-bolditalic,
+    ]
+    \setmonofont{texgyrecursor}[
+      Extension=.otf,
+      UprightFont=*-regular,
+      BoldFont=*-bold,
+      ItalicFont=*-italic,
+      BoldItalicFont=*-bolditalic,
+    ]
     %%%% Using Fandol Family Fonts
-    \setCJKmainfont{FandolSong}
-    \setCJKsansfont{FandolHei} % Hei
-    \setCJKmonofont{FandolFang} % fs
+    \setCJKmainfont{FandolSong-Regular}[
+      Extension=.otf,
+      BoldFont=FandolSong-Bold,
+    ]
+    \setCJKsansfont{FandolHei-Regular}[
+      Extension=.otf,
+      BoldFont=FandolHei-Bold,
+    ]
+    \setCJKmonofont{FandolFang-Regular}[
+      Extension=.otf,
+    ]
     %%%% alias
-    \setCJKfamilyfont{song}{FandolSong}
-    \setCJKfamilyfont{hei}{FandolHei}
-    \setCJKfamilyfont{fs}{FandolFang} % fang-song
-    \setCJKfamilyfont{kai}{FandolKai} % Kai
-    \setCJKfamilyfont{times}{Times New Roman} % times
+    \setCJKfamilyfont{song}{FandolSong-Regular}[Extension=.otf,BoldFont=FandolSong-Bold]
+    \setCJKfamilyfont{hei}{FandolHei-Regular}[Extension=.otf,BoldFont=FandolHei-Bold]
+    \setCJKfamilyfont{fs}{FandolFang-Regular}[Extension=.otf]
+    \setCJKfamilyfont{kai}{FandolKai-Regular}[Extension=.otf]
+    \setCJKfamilyfont{times}{texgyretermes-regular.otf}
 }
 
 \ifisttf
