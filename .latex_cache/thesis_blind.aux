@@ -72,83 +72,88 @@
 \@writefile{toc}{\contentsline {section}{\numberline {2.6}本章小结}{19}{section.2.6}\protected@file@percent }
 \@writefile{toc}{\contentsline {chapter}{\numberline {3}实例级粗粒度感知：基于仿生剪枝的轻量化目标定位方法}{21}{chapter.3}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {3.1}引言：广域搜寻的需求与基础模型压缩瓶颈}{21}{section.3.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3.1}{\ignorespaces 特征归因的可视化对比。 (a) 无人机 RGB 输入图像。(b) 基准模型 MTP 在 RSTD 上的热力图，显示出弥散现象及背景易受干扰的问题。(c) 我们模型的热力图，展现出对目标物更强的关注度。}}{22}{figure.caption.10}\protected@file@percent }
+\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
+\newlabel{fig:Feature_capture}{{3.1}{22}{特征归因的可视化对比。 (a) 无人机 RGB 输入图像。(b) 基准模型 MTP 在 RSTD 上的热力图，显示出弥散现象及背景易受干扰的问题。(c) 我们模型的热力图，展现出对目标物更强的关注度。}{figure.caption.10}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.1.1}遥感目标检测与广域搜寻的特有挑战}{22}{subsection.3.1.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.1.2}遥感视觉基础模型的崛起与边缘算力困境}{22}{subsection.3.1.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.1.3}模型压缩的致命瓶颈：微弱特征弥散与尺度退化}{23}{subsection.3.1.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1.2}遥感视觉基础模型的崛起与边缘算力困境}{23}{subsection.3.1.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1.3}模型压缩的致命瓶颈：微弱特征弥散与尺度退化}{24}{subsection.3.1.3}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {3.2}基线架构与特征弥散机理}{24}{section.3.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.2.1}多任务预训练（MTP）基线架构构建}{24}{subsection.3.2.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.2.2}边缘部署困境与线性压缩下的特征弥散机理}{25}{subsection.3.2.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {3.3}突触分形剪枝机制的数学建模与稀疏化重构}{26}{section.3.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.1}对称特征映射网络与流形交织算子设计}{26}{subsection.3.3.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.2}梯度差异算子构建与可微门控寻优}{27}{subsection.3.3.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.1}对称特征映射网络与流形交织算子设计}{27}{subsection.3.3.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.2}梯度差异算子构建与可微门控寻优}{28}{subsection.3.3.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.3.3}离散硬阈值截断机制与受控残差注入}{28}{subsection.3.3.3}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {3.4}几何拓扑感知的多分辨率流形路由网络设计}{29}{section.3.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.1}拉普拉斯流形嵌入与曲率感知查询构建}{29}{subsection.3.4.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.2}稀疏智能体路由决策与跨尺度特征集成}{30}{subsection.3.4.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.1}拉普拉斯流形嵌入与曲率感知查询构建}{30}{subsection.3.4.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.2}稀疏智能体路由决策与跨尺度特征集成}{31}{subsection.3.4.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {3.5}实验验证与系统效能评估}{32}{section.3.5}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.5.1}实验数据集与评价指标体系}{32}{subsection.3.5.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.5.2}极限算力下的实例级感知性能验证}{33}{subsection.3.5.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.5.3}核心机制消融实验与网络拓扑寻优}{34}{subsection.3.5.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.5.4}系统边缘端理论功耗推演}{35}{subsection.3.5.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5.1}实验数据集与评价指标体系}{33}{subsection.3.5.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3.2}{\ignorespaces 对不同遥感目标检测器在 DOTA 数据集上的检测性能进行的全面评估。其中，lc 代表传统的线性压缩。}}{34}{figure.caption.11}\protected@file@percent }
+\newlabel{fig:Gflogs}{{3.2}{34}{对不同遥感目标检测器在 DOTA 数据集上的检测性能进行的全面评估。其中，lc 代表传统的线性压缩。}{figure.caption.11}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5.2}极限算力下的实例级感知性能验证}{34}{subsection.3.5.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5.3}核心机制消融实验与网络拓扑寻优}{35}{subsection.3.5.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5.4}系统边缘端理论功耗推演}{36}{subsection.3.5.4}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.5.5}特征高频响应定性分析与可视化}{36}{subsection.3.5.5}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {3.6}本章小结}{36}{section.3.6}\protected@file@percent }
-\@writefile{toc}{\contentsline {chapter}{\numberline {4}空间像素级细粒度感知：频空协同的大模型参数高效微调机制}{38}{chapter.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {4.1}引言}{38}{section.4.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1.1}灾害损毁评估中的微观拓扑提取需求}{38}{subsection.4.1.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1.2}视觉大模型的迁移困境与灾害特征提取瓶颈}{38}{subsection.4.1.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {4.2}面向局部细节补偿的像素差分感知机制 (Pixel Difference Convolution, PDC)}{39}{section.4.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.1}标准卷积在细粒度特征提取中的感受野局限性}{39}{subsection.4.2.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.2}像素级梯度聚合网络设计与微小拓扑特征捕获}{40}{subsection.4.2.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.3}基于 PDC 的空域高频信息补偿数学建模}{40}{subsection.4.2.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {4.3}抑制复杂背景干扰的频域全局增强策略 (Frequency Enhancement, FE)}{41}{section.4.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.3.1}空间域复杂形态的拓扑混淆与光谱相近性难题}{41}{subsection.4.3.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.3.2}傅里叶频域变换与多尺度频带解耦算子设计}{42}{subsection.4.3.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {4.4}频空双维协同的轻量化适配器架构重构 (FourierPDC-Adapter)}{43}{section.4.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.4.1}参数高效微调（PEFT）范式的引入与网络冻结策略}{43}{subsection.4.4.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.4.2}频空双分支特征的乘法门控跨域融合}{44}{subsection.4.4.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.4.3}维度投影对齐与残差级联集成机制}{44}{subsection.4.4.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {4.5}实验验证与精细化像素分割效能评估}{45}{section.4.5}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.5.1}实验数据集与预处理配置}{45}{subsection.4.5.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.5.2}评价指标体系}{45}{subsection.4.5.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.5.3}像素级分割精度定量分析与应急响应效能}{46}{subsection.4.5.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.5.4}频空双维算子的正交消融实验与架构寻优}{47}{subsection.4.5.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.5.5}细粒度轮廓重构的定性可视化分析}{47}{subsection.4.5.5}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {4.6}讨论与结论}{48}{section.4.6}\protected@file@percent }
-\@writefile{toc}{\contentsline {chapter}{\numberline {5}光谱级深层属性解译：仿生轻量化高光谱分类机制}{50}{chapter.5}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {5.1}引言}{50}{section.5.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.1.1}从几何拓扑到物理材质：极端环境下的表观失效困境}{50}{subsection.5.1.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.1.2}高维光谱数据的“维数灾难”与边缘端算力鸿沟}{50}{subsection.5.1.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {5.2}受蜜蜂视觉启发的仿生轻量化架构 (BioLiteNet) 设计理念}{51}{section.5.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.2.1}蜜蜂视觉系统的“全局感知-精准聚焦”生物学机制}{52}{subsection.5.2.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.2.2}BioLiteNet 的整体拓扑图与极简数据流构建}{52}{subsection.5.2.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {5.3}面向高维冗余的动态通道筛选机制 (BeeSenseSelector)}{53}{section.5.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.3.1}传统通道注意力在高维光谱中的计算冗余与失效机理}{53}{subsection.5.3.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.3.2}模拟蜜蜂视觉选择性的 Top-K 动态掩码构建}{54}{subsection.5.3.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.3.3}基于特征重加权的光谱通道分离数学建模}{54}{subsection.5.3.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {5.4}空谱联合的多尺度自适应融合网络 (AffScaleConv)}{55}{section.5.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.4.1}单一感受野在复杂异质地物特征提取中的拓扑盲区}{55}{subsection.5.4.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.4.2}模拟蜜蜂多视角观测的深度可分离级联架构}{56}{subsection.5.4.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.4.3}空间纹理与光谱特征的降维重构与跨域对齐数学建模}{56}{subsection.5.4.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {5.5}实验验证与高光谱地物分类效能评估}{57}{section.5.5}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.5.1}实验环境构建与训练优化策略}{57}{subsection.5.5.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.5.2}多尺度高光谱基准数据集详解}{58}{subsection.5.5.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.5.3}评价指标体系}{59}{subsection.5.5.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.5.4}对比方法选取与基准线构建}{60}{subsection.5.5.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.5.5}极端少样本条件下的分类精度深度剖析}{60}{subsection.5.5.5}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.5.6}极致轻量化论证：空间与时间复杂度的降维打击}{61}{subsection.5.5.6}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.5.7}核心仿生算子的正交解耦与拓扑寻优}{62}{subsection.5.5.7}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.5.8}复杂地物分类掩码的定性可视化剖析}{63}{subsection.5.5.8}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {5.6}本章小结}{63}{section.5.6}\protected@file@percent }
-\@writefile{toc}{\contentsline {chapter}{\numberline {6}总结与展望}{65}{chapter.6}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {6.1}全文总结}{65}{section.6.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.1.1}算力受限下的遥感广域宏观目标快速定位}{65}{subsection.6.1.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.1.2}频空协同的复杂灾害场景微观像素级分割}{65}{subsection.6.1.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.1.3}仿生轻量化驱动的高维光谱材质深层解译}{66}{subsection.6.1.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {6.2}研究局限性与未来展望}{66}{section.6.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.2.1}多源异构观测模态的动态联合解译机制}{67}{subsection.6.2.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.2.2}面向异构 AI 芯片的软硬协同量化与编译加速}{67}{subsection.6.2.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.2.3}从“特征感知”走向“开放集认知”：多模态大模型的推理进化}{67}{subsection.6.2.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {chapter}{致谢}{69}{chapter*.13}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3.6}本章小结}{37}{section.3.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{\numberline {4}空间像素级细粒度感知：频空协同的大模型参数高效微调机制}{39}{chapter.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4.1}引言}{39}{section.4.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1.1}灾害损毁评估中的微观拓扑提取需求}{39}{subsection.4.1.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1.2}视觉大模型的迁移困境与灾害特征提取瓶颈}{39}{subsection.4.1.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4.2}面向局部细节补偿的像素差分感知机制 (Pixel Difference Convolution, PDC)}{40}{section.4.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.1}标准卷积在细粒度特征提取中的感受野局限性}{40}{subsection.4.2.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.2}像素级梯度聚合网络设计与微小拓扑特征捕获}{41}{subsection.4.2.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.3}基于 PDC 的空域高频信息补偿数学建模}{41}{subsection.4.2.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4.3}抑制复杂背景干扰的频域全局增强策略 (Frequency Enhancement, FE)}{42}{section.4.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3.1}空间域复杂形态的拓扑混淆与光谱相近性难题}{42}{subsection.4.3.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3.2}傅里叶频域变换与多尺度频带解耦算子设计}{43}{subsection.4.3.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4.4}频空双维协同的轻量化适配器架构重构 (FourierPDC-Adapter)}{44}{section.4.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.4.1}参数高效微调（PEFT）范式的引入与网络冻结策略}{44}{subsection.4.4.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.4.2}频空双分支特征的乘法门控跨域融合}{45}{subsection.4.4.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.4.3}维度投影对齐与残差级联集成机制}{45}{subsection.4.4.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4.5}实验验证与精细化像素分割效能评估}{46}{section.4.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.5.1}实验数据集与预处理配置}{46}{subsection.4.5.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.5.2}评价指标体系}{46}{subsection.4.5.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.5.3}像素级分割精度定量分析与应急响应效能}{47}{subsection.4.5.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.5.4}频空双维算子的正交消融实验与架构寻优}{48}{subsection.4.5.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.5.5}细粒度轮廓重构的定性可视化分析}{48}{subsection.4.5.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4.6}讨论与结论}{49}{section.4.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{\numberline {5}光谱级深层属性解译：仿生轻量化高光谱分类机制}{51}{chapter.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5.1}引言}{51}{section.5.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1.1}从几何拓扑到物理材质：极端环境下的表观失效困境}{51}{subsection.5.1.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1.2}高维光谱数据的“维数灾难”与边缘端算力鸿沟}{51}{subsection.5.1.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5.2}受蜜蜂视觉启发的仿生轻量化架构 (BioLiteNet) 设计理念}{52}{section.5.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2.1}蜜蜂视觉系统的“全局感知-精准聚焦”生物学机制}{53}{subsection.5.2.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2.2}BioLiteNet 的整体拓扑图与极简数据流构建}{53}{subsection.5.2.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5.3}面向高维冗余的动态通道筛选机制 (BeeSenseSelector)}{54}{section.5.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3.1}传统通道注意力在高维光谱中的计算冗余与失效机理}{54}{subsection.5.3.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3.2}模拟蜜蜂视觉选择性的 Top-K 动态掩码构建}{55}{subsection.5.3.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3.3}基于特征重加权的光谱通道分离数学建模}{55}{subsection.5.3.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5.4}空谱联合的多尺度自适应融合网络 (AffScaleConv)}{56}{section.5.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.4.1}单一感受野在复杂异质地物特征提取中的拓扑盲区}{56}{subsection.5.4.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.4.2}模拟蜜蜂多视角观测的深度可分离级联架构}{57}{subsection.5.4.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.4.3}空间纹理与光谱特征的降维重构与跨域对齐数学建模}{57}{subsection.5.4.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5.5}实验验证与高光谱地物分类效能评估}{58}{section.5.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.5.1}实验环境构建与训练优化策略}{58}{subsection.5.5.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.5.2}多尺度高光谱基准数据集详解}{59}{subsection.5.5.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.5.3}评价指标体系}{60}{subsection.5.5.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.5.4}对比方法选取与基准线构建}{61}{subsection.5.5.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.5.5}极端少样本条件下的分类精度深度剖析}{61}{subsection.5.5.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.5.6}极致轻量化论证：空间与时间复杂度的降维打击}{62}{subsection.5.5.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.5.7}核心仿生算子的正交解耦与拓扑寻优}{63}{subsection.5.5.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.5.8}复杂地物分类掩码的定性可视化剖析}{64}{subsection.5.5.8}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5.6}本章小结}{64}{section.5.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{\numberline {6}总结与展望}{66}{chapter.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {6.1}全文总结}{66}{section.6.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.1.1}算力受限下的遥感广域宏观目标快速定位}{66}{subsection.6.1.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.1.2}频空协同的复杂灾害场景微观像素级分割}{66}{subsection.6.1.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.1.3}仿生轻量化驱动的高维光谱材质深层解译}{67}{subsection.6.1.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {6.2}研究局限性与未来展望}{67}{section.6.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.2.1}多源异构观测模态的动态联合解译机制}{68}{subsection.6.2.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.2.2}面向异构 AI 芯片的软硬协同量化与编译加速}{68}{subsection.6.2.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.2.3}从“特征感知”走向“开放集认知”：多模态大模型的推理进化}{68}{subsection.6.2.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{致谢}{70}{chapter*.15}\protected@file@percent }
 \bibstyle{bstutf8}
 \bibdata{ref/refs}
 \bibcite{zhu2017deep}{{1}{}{{}}{{}}}
@@ -165,7 +170,7 @@
 \bibcite{redmon2016yolo}{{12}{}{{}}{{}}}
 \bibcite{liu2016ssd}{{13}{}{{}}{{}}}
 \bibcite{ding2019learning}{{14}{}{{}}{{}}}
-\@writefile{toc}{\contentsline {chapter}{参考文献}{71}{section*.14}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{参考文献}{71}{section*.16}\protected@file@percent }
 \bibcite{han2021redet}{{15}{}{{}}{{}}}
 \bibcite{xie2021oriented}{{16}{}{{}}{{}}}
 \bibcite{carion2020end}{{17}{}{{}}{{}}}
@@ -185,7 +190,7 @@
 \bibcite{howard2019searching}{{31}{}{{}}{{}}}
 \bibcite{ma2019shuffle}{{32}{}{{}}{{}}}
 \bibcite{tan2019efficient}{{33}{}{{}}{{}}}
-\@writefile{toc}{\contentsline {chapter}{作者在学期间取得的学术成果}{74}{chapter*.16}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{作者在学期间取得的学术成果}{74}{chapter*.18}\protected@file@percent }
 \providecommand\NAT@force@numbers{}\NAT@force@numbers
 \@writefile{toc}{\ttl@change@i {\@ne }{chapter}{0pt}{\vspace {0.25\baselineskip } \heiti \xiaosi [1.25]}{附录\,\thecontentslabel \quad }{}{\hspace {.5em}\titlerule *{.}\contentspage }\relax }
 \@writefile{toc}{\ttl@change@v {chapter}{}{}{}\relax }

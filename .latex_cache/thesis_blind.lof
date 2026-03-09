@@ -1,1 +1,3 @@
+\contentsline {figure}{\numberline {3.1}{\ignorespaces 特征归因的可视化对比。 (a) 无人机 RGB 输入图像。(b) 基准模型 MTP 在 RSTD 上的热力图，显示出弥散现象及背景易受干扰的问题。(c) 我们模型的热力图，展现出对目标物更强的关注度。}}{22}{figure.caption.10}%
+\contentsline {figure}{\numberline {3.2}{\ignorespaces 对不同遥感目标检测器在 DOTA 数据集上的检测性能进行的全面评估。其中，lc 代表传统的线性压缩。}}{34}{figure.caption.11}%
 \contentsfinish 
