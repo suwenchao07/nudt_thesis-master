@@ -1,7 +1,9 @@
 \contentsline {table}{\numberline {3.1}{\ignorespaces COMPARISONS WITH SOTA METHODS WITH SINGLE-SCALE AND MULTI-SCALE TRAINING AND TESTING.}}{36}{table.caption.15}%
 \contentsline {table}{\numberline {3.2}{\ignorespaces 在 HRSC2016 数据集上与最先进（SOTA）方法的对比。LiteFM-RSDet 以最低的参数量和计算复杂度（FLOPs）取得了最佳的准确率。}}{37}{table.caption.16}%
 \contentsline {table}{\numberline {3.3}{\ignorespaces 在 DIOR-R 数据集上与最先进（SOTA）方法的对比。LiteFM-RSDet 以最高的准确率和最少的参数量优于所有对比方法。}}{37}{table.caption.17}%
-\contentsline {table}{\numberline {3.4}{\ignorespaces 关于突触分形剪枝（SFP）和基于MoE增强的消融实验。SFP在不增加模型大小的情况下提高了准确率，而MoE在可接受的计算开销下进一步提升了性能。}}{38}{table.caption.18}%
-\contentsline {table}{\numberline {3.5}{\ignorespaces 关于突触分形剪枝（SFP）组件设计的消融实验。移除交换矩阵（Swap Matrix）、层归一化（Layer Normalization）或阈值门控（Threshold Gating）等关键元素会导致性能一致下降，证实了它们各自的贡献。}}{38}{table.caption.19}%
-\contentsline {table}{\numberline {3.6}{\ignorespaces 关于突触分形剪枝（SFP）在不同剪枝率下的消融实验。25\%的剪枝率在性能和计算效率之间取得了最佳的平衡。}}{39}{table.caption.20}%
+\contentsline {table}{\numberline {3.4}{\ignorespaces 关于突触分形剪枝（SFP）和基于MoE增强的消融实验。SFP在不增加模型大小的情况下提高了准确率，而MoE在可接受的计算开销下进一步提升了性能。}}{40}{table.caption.23}%
+\contentsline {table}{\numberline {3.5}{\ignorespaces 关于突触分形剪枝（SFP）组件设计的消融实验。移除交换矩阵（Swap Matrix）、层归一化（Layer Normalization）或阈值门控（Threshold Gating）等关键元素会导致性能一致下降，证实了它们各自的贡献。}}{41}{table.caption.24}%
+\contentsline {table}{\numberline {3.6}{\ignorespaces 关于突触分形剪枝（SFP）在不同剪枝率下的消融实验。25\%的剪枝率在性能和计算效率之间取得了最佳的平衡。}}{42}{table.caption.26}%
+\contentsline {table}{\numberline {3.7}{\ignorespaces 关于多分辨率流形路由器（MMR）的消融实验。每个组件都通过对多尺度几何感知专家路由进行建模，为性能提升做出了贡献。}}{43}{table.caption.28}%
+\contentsline {table}{\numberline {3.8}{\ignorespaces MMR模块中不同专家数量（$K$）下的性能。增加$K$可以提高mAP，最高可达6个专家，超过此数量则收益微乎其微或呈负增长。}}{43}{table.caption.29}%
 \contentsfinish 

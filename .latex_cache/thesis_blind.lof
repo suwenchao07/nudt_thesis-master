@@ -3,4 +3,15 @@
 \contentsline {figure}{\numberline {3.3}{\ignorespaces SFP的结构。}}{27}{figure.caption.12}%
 \contentsline {figure}{\numberline {3.4}{\ignorespaces MMR的结构。}}{31}{figure.caption.13}%
 \contentsline {figure}{\numberline {3.5}{\ignorespaces 对不同遥感目标检测器在 DOTA 数据集上的检测性能进行的全面评估。其中，lc 代表传统的线性压缩。}}{35}{figure.caption.14}%
+\contentsline {figure}{\numberline {3.6}{\ignorespaces 在 DOTA 数据集（多尺度）上与最先进（SOTA）轻量级目标检测方法的对比。我们的方法在保持显著降低的计算开销的同时，取得了卓越的准确率。}}{38}{figure.caption.18}%
+\contentsline {figure}{\numberline {3.7}{\ignorespaces 在多尺度设置下，LiteFM-RSDet与LSKNet-S在DOTAv1.0数据集上的对比评估。在类别层面上，所提出的模型在检测具有复杂结构或大尺度变化的目标时展现出明显的优势，mAP提升通常超过1\%。特别是对于SV和HC类别，观察到了2–3\%的性能提升，这突显了LiteFM-RSDet在小目标建模、旋转不变性和背景抑制方面的有效性。}}{38}{figure.caption.19}%
+\contentsline {figure}{\numberline {3.8}{\ignorespaces 在 DIOR-R 数据集上与最先进（SOTA）轻量级目标检测方法的对比。我们的方法在保持显著降低的计算开销的同时，取得了卓越的准确率。}}{39}{figure.caption.20}%
+\contentsline {figure}{\numberline {3.9}{\ignorespaces 所提方法在DOTA-v1.0数据集上生成的定性结果，其中展示了三种不同的场景：目标密集分布、目标稀疏分布以及目标淹没在复杂背景中的情况。}}{39}{figure.caption.21}%
+\contentsline {figure}{\numberline {3.10}{\ignorespaces 关于突触分形剪枝（SFP）和基于MoE（混合专家）增强的消融实验。SFP在不增加模型大小的情况下提高了准确率，而MoE在可接受的开销下进一步提升了性能。}}{40}{figure.caption.22}%
+\contentsline {figure}{\numberline {3.11}{\ignorespaces 关于突触分形剪枝（SFP）组件设计的消融实验。}}{41}{figure.caption.25}%
+\contentsline {figure}{\numberline {3.12}{\ignorespaces 关于突触分形剪枝（SFP）在不同剪枝率下的消融实验。}}{42}{figure.caption.27}%
+\contentsline {figure}{\numberline {3.13}{\ignorespaces MMR 模块中不同专家数量 K 下的性能。}}{44}{figure.caption.30}%
+\contentsline {figure}{\numberline {3.14}{\ignorespaces 不同遥感目标检测器在DIOR-R数据集上的检测性能。红色代表本文模型。}}{44}{figure.caption.31}%
+\contentsline {figure}{\numberline {3.15}{\ignorespaces DOTA 数据集中简单堆场（Yard）场景的检测结果及热力图。每组左图为叠加了检测框的原图，右图为特征图对应的注意力热力图。基线（Baseline）模型的热力图呈现出分散的噪声，且目标与背景的对比度较低。LiteFM-RSDet 在车辆和集装箱的轮廓处生成了亮度集中的高响应区域，有效抑制了空旷场地和阴影区域，且检测框与几何边界贴合得更加紧密。与基线模型相比，LiteFM-RSDet 在成排车辆和集装箱的边缘处形成了更密集的亮区，背景抑制效果明显，这验证了分形剪枝在提升弱纹理小目标检测能力方面的有效性。}}{45}{figure.caption.32}%
+\contentsline {figure}{\numberline {3.16}{\ignorespaces DOTA 数据集中复杂街区（Neighbourhood）场景的检测结果及热力图。每组左图为叠加了检测框的原图，右图为对应特征图的注意力热力图。基线（Baseline）模型在屋脊和植被纹理处产生了碎片化的激活响应，导致对小型车辆和道路间隙中的目标漏检。LiteFM-RSDet 的热力图在矩形屋顶、道路中心带以及车辆集群内部生成了连贯的条状亮区，并对树冠和阴影等无关纹理保持极低的响应，展示了曲率调制的流线路由（streamer routing）在复杂背景下的聚焦优势。}}{46}{figure.caption.33}%
 \contentsfinish 

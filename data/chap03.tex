@@ -246,6 +246,27 @@ PKINet-S [93]      & IN & 30.8M & 190G & 67.03 \\
 \end{tabular}
 \end{table}
 
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=.8\linewidth]{figures/DOTA.png}
+  \caption{在 DOTA 数据集（多尺度）上与最先进（SOTA）轻量级目标检测方法的对比。我们的方法在保持显著降低的计算开销的同时，取得了卓越的准确率。}
+  \label{fig:DOTA}
+\end{figure}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=.8\linewidth]{figures/DOTAV1.png}
+  \caption{在多尺度设置下，LiteFM-RSDet与LSKNet-S在DOTAv1.0数据集上的对比评估。在类别层面上，所提出的模型在检测具有复杂结构或大尺度变化的目标时展现出明显的优势，mAP提升通常超过1\%。特别是对于SV和HC类别，观察到了2–3\%的性能提升，这突显了LiteFM-RSDet在小目标建模、旋转不变性和背景抑制方面的有效性。}
+  \label{fig:DOTAV1}
+\end{figure}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=.8\linewidth]{figures/DIOR-R.png}
+  \caption{在 DIOR-R 数据集上与最先进（SOTA）轻量级目标检测方法的对比。我们的方法在保持显著降低的计算开销的同时，取得了卓越的准确率。}
+  \label{fig:DIOR-R}
+\end{figure}
+
 单尺度测试： 我们的方法在桥梁（BR）、直升机（HC）、船舶（SH）和环岛（RA）等极具挑战性的类别上实现了显著的 mAP 提升，证明了其在检测具有复杂结构和剧烈方向变化目标时的强大鲁棒性。与 AO2-DETR、DinoOBB 和 RT-DETR 等最新 SOTA 方法相比，LiteFM-RSDet 在各个类别上表现出更加均衡且极具竞争力的性能。
 
 多尺度测试与极限算力突破： 这一突破在多尺度模式下更为显著。在严格维持相同的资源约束条件（仅占用 28.3M 参数 / 195G FLOPs）下，LiteFM-RSDet 取得了 81.80\% 的 mAP，全面超越了所有参与对比的模型。它以 0.16\% 的优势超越了计算量相近的优秀轻量化网络 LSKNet-S（81.64\% mAP / 161G FLOPs）；更为惊人的是，它以一半的计算资源代价，实现了对参数量近乎翻倍的重型感知架构 RTMDet-R（81.33\% mAP / 52.3M / 205G FLOPs）高达 0.47\% 的绝对精度反超。
@@ -255,6 +276,20 @@ PKINet-S [93]      & IN & 30.8M & 190G & 67.03 \\
 在针对长条形目标的 HRSC2016 数据集上，LiteFM-RSDet 同样斩获了全局最优的 mAP(12) 98.58\% 以及并列第一的 mAP(07) 90.60\%。其模型计算复杂度（28.4M / 195G FLOPs）仅为强基线模型 ReDet 的 90\%，且仅为原始 MTP 大模型的四分之一。这表明该方法在保持顶级精度的同时，实现了同级别最低的计算与存储门槛，为星载和机载应用开辟了部署可能。
 
 在场景更为繁杂的 DIOR-R 数据集上，LiteFM-RSDet 以最低的参数规模（28.3M）录得了最高的 69.17\% mAP，全面压制了 PKINet-S 和 DCFL 等依赖密集网络结构的竞争者。这表明性能的增益并非单纯依赖于大规模预训练，而是源于该架构在编码方向和空间信息上的内在有效性。
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=.8\linewidth]{figures/results_DOTAv1.png}
+  \caption{所提方法在DOTA-v1.0数据集上生成的定性结果，其中展示了三种不同的场景：目标密集分布、目标稀疏分布以及目标淹没在复杂背景中的情况。}
+  \label{fig:results_DOTAv1}
+\end{figure}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=.8\linewidth]{figures/Ablationstudy.png}
+  \caption{关于突触分形剪枝（SFP）和基于MoE（混合专家）增强的消融实验。SFP在不增加模型大小的情况下提高了准确率，而MoE在可接受的开销下进一步提升了性能。}
+  \label{fig:results_DOTAv1}
+\end{figure}
 
 \subsection{核心机制消融实验与网络拓扑寻优}
 
@@ -293,6 +328,12 @@ Baseline (Linear Compression)       & 73.91 & 25.7 & 165.2 \\
 \end{tabular}
 \end{table}
 
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=.8\linewidth]{figures/ComponentDesign.png}
+  \caption{关于突触分形剪枝（SFP）组件设计的消融实验。}
+  \label{fig:ComponentDesign}
+\end{figure}
 为深入解耦 SFP（突触分形剪枝）与 MMR（多分辨率流形路由）模块对检测系统的独立贡献，本节在执行线性压缩的基线模型上开展了细粒度的消融实验。核心模块总体增益评估： 采用等比例线性压缩的基线模型其 mAP 仅为 73.91\%（25.7M 参数，165.2 GFLOPs）。当单独引入 SFP 机制后，在未增加任何额外参数或理论计算开销的严苛约束下，系统 mAP 实现了近 3\% 的显著提升（达 76.87\%）。这证明了 SFP 有效地通过结构重组提升了表征效率。进一步级联 MMR（基于 MoE 的模块）后，系统的性能峰值被成功推高至 78.52\% mAP，以极小的参数和 FLOPs 增加换取了极佳的精度-效率权衡。SFP 内部算子有效性验证： 对 SFP 内部算子的剥离实验表明，依次移除交换矩阵 $J$、层归一化、硬阈值截断、门控机制、受控残差 $\alpha$ 以及双分支拓扑，均会导致系统表征能力的逐级衰退。尤为关键的是，当使用随机掩码（Random Mask）替代基于可学习注意力的门控机制时，检测精度出现最大幅度的断崖式跌落（降至 74.58\%）。这充分印证了：网络稀疏化必须依赖数据驱动的注意力打分机制，盲目的全局裁剪会导致参数利用率低下。同时，移除双分支设计和交换矩阵也会削弱模型保留空间多样性的能力。剪枝率的拓扑寻优： 实验揭示了剪枝率与预测精度之间明显的负相关性。虽然未剪枝的完整模型精度最高（78.60\%），但计算成本高昂。当 SFP 的剪枝率设定为 25\% 时，网络达到了最佳平衡点，在大幅降低参数和计算开销（25.7M / 165.2 GFLOPs）的同时锁定了 76.87\% 的高保真精度。超过此阈值，精度退化显著加剧，呈现边际效益递减。MMR 模块解耦与专家数量寻优： 对 MMR 模块的解耦分析表明，移除几何嵌入、多尺度融合、曲率偏置、稀疏路由或拉普拉斯感知中的任何一项，均会导致精度下降。这证实了多尺度几何特征在指导 MoE 框架内专家选择中的关键作用。进一步地，随着路由专家数量 $K$ 从 2 增至 6，模型 mAP 稳步上升并在 $K=6$ 时达到最优（78.52\%）。当 $K$ 继续增至 8 时，反而出现性能微降，这揭示了过度的专家分支会引发特征重叠与冗余干扰，$K=6$ 是多尺度流形重构与硬件资源利用的最佳拓扑折中点。
 
 \begin{table}[htbp]
@@ -311,6 +352,13 @@ Pruning Ratio & mAP (\%) & \#Params (M) & GFLOPs \\
 \bottomrule
 \end{tabular}
 \end{table}
+
+\begin{figure}[t]
+  \centering
+\includegraphics[width=.8\linewidth]{figures/pruningratios.png}
+  \caption{关于突触分形剪枝（SFP）在不同剪枝率下的消融实验。}
+  \label{fig:pruningratios}
+\end{figure}
 
 \begin{table}[htbp]
 \centering
@@ -347,13 +395,42 @@ Experts ($K$) & mAP (\%) & \#Params (M) & GFLOPs \\
 \end{tabular}
 \end{table}
 
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=.8\linewidth]{figures/KofMMR.png}
+  \caption{MMR 模块中不同专家数量 K 下的性能。}
+  \label{fig:KofMMR}
+\end{figure}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=.8\linewidth]{figures/performanceOnDIOR-R.png}
+  \caption{不同遥感目标检测器在DIOR-R数据集上的检测性能。红色代表本文模型。}
+  \label{fig:performanceOnDIOR-R}
+\end{figure}
+
 \subsection{系统边缘端理论功耗推演}
 本文提出的 LiteFM-RSDet 架构通过 SFP 与 MMR 的协同，在保持高精度的同时大幅降低了计算需求。在 DOTA 数据集上，其 190 GFLOPs 的计算负载相较于基线 MTP 模型（543 GFLOPs）降低了 65.0\%。为论证该模型在机载边缘节点部署的物理可行性，本文基于动态电压和频率缩放（DVFS）物理法则建立了芯片级功耗推演模型。假设典型的边缘端 AI 算力芯片能效比为 $20.0 \text{ TOp/W}\cdot\text{s}$，经推导其单次浮点操作的理论物理能耗为：$$E_{op} = \frac{1}{20.0 \times 10^{12}} = 5.0 \times 10^{-14} \text{ J/op} \quad (28)$$基于此基准，结合网络 190 GFLOPs 的峰值计算负载以及 1.8 W 的系统静态维持功耗，推演得出其在满载状态下的理论总功耗仅为 5.3 W：$$P = (190 \times 10^9 \times 5.0 \times 10^{-14}) + 1.8 = 5.3 \text{ W} \quad (29)$$更具工程应用价值的是，得益于 MMR 模块的动态计算自适应调整属性，在广域巡航遇到目标分布稀疏或背景单一的常规场景时，模型内部的计算量可自适应下调约 15\%，将实际运行功耗进一步动态压降至 4.5 W。与传统的重型 Transformer 探测架构相比，本系统在保障更高精度的前提下，实现了 2.3 倍的物理能源效率跃升，其自适应特性确保了功耗波动在 $\pm 5\%$ 以内，完美突破了无人机、低轨卫星等微型空天平台受限于电池续航的物理部署瓶颈。
 
 \subsection{特征高频响应定性分析与可视化}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=.8\linewidth]{figures/DOTAsimple.png}
+  \caption{DOTA 数据集中简单堆场（Yard）场景的检测结果及热力图。每组左图为叠加了检测框的原图，右图为特征图对应的注意力热力图。基线（Baseline）模型的热力图呈现出分散的噪声，且目标与背景的对比度较低。LiteFM-RSDet 在车辆和集装箱的轮廓处生成了亮度集中的高响应区域，有效抑制了空旷场地和阴影区域，且检测框与几何边界贴合得更加紧密。与基线模型相比，LiteFM-RSDet 在成排车辆和集装箱的边缘处形成了更密集的亮区，背景抑制效果明显，这验证了分形剪枝在提升弱纹理小目标检测能力方面的有效性。}
+  \label{fig:DOTAsimple}
+\end{figure}
+
 为从物理可解释性层面剖析 LiteFM-RSDet 在微弱目标检测上性能飙升的内在机理，本文提取了 DOTA 数据集中的代表性场景，对其深层特征网络的注意力热力图（Attention Heatmaps）进行了对比定性分析。
 
 结构规则场景（如车辆堆场）的响应分析： 在几何排列规则的场景中，基线模型的深层特征响应呈现出高度的同质化，在全局空间内生成了大量无序的散射噪声（Scattering Noise）。这种背景与前景响应对比度极低的特征图，导致系统定位不佳并引发大量误报。相反，LiteFM-RSDet 生成了高度聚焦的激活亮斑，其响应区域极其精准地贴合了车辆的物理轮廓和车厢间隙，而在空地和阴影等无效区域保持了极其纯净的静息响应，证明了分形剪枝在增强弱纹理小目标检测能力上的有效性。
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=.8\linewidth]{figures/DOTAcomplex.png}
+  \caption{DOTA 数据集中复杂街区（Neighbourhood）场景的检测结果及热力图。每组左图为叠加了检测框的原图，右图为对应特征图的注意力热力图。基线（Baseline）模型在屋脊和植被纹理处产生了碎片化的激活响应，导致对小型车辆和道路间隙中的目标漏检。LiteFM-RSDet 的热力图在矩形屋顶、道路中心带以及车辆集群内部生成了连贯的条状亮区，并对树冠和阴影等无关纹理保持极低的响应，展示了曲率调制的流线路由（streamer routing）在复杂背景下的聚焦优势。}
+  \label{fig:DOTAcomplex}
+\end{figure}
 
 高纹理异质性场景（如复杂居民区）的响应分析： 在面对建筑物密集、纹理交织的复杂区域时，基线模型在遇到屋脊、植被和阴影时产生了严重的碎片化激活（Fragmented Activation），导致模型感受野被杂波淹没，严重漏检了狭窄道路上的小型车辆。相比之下，LiteFM-RSDet 展现出了连贯且强烈的空间特征激活模式。其高频响应区域精准锁定了建筑物屋顶矩形、道路中隔带和微弱的车辆集群内部，同时对树冠和阴影等不相关纹理保持极低响应，充分展示了曲率调制的流形路由在复杂背景下的聚焦优势。
 
