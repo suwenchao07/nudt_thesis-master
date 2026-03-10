@@ -18,4 +18,9 @@
 \contentsline {figure}{\numberline {4.2}{\ignorespaces 像素差分卷积（PDC）模块的结构。}}{50}{figure.caption.36}%
 \contentsline {figure}{\numberline {4.3}{\ignorespaces 频域增强（FE）模块的结构。}}{52}{figure.caption.37}%
 \contentsline {figure}{\numberline {4.4}{\ignorespaces 在两个具有代表性的城市场景上的定性比较。在相同的提示和阈值下，与原始SAM相比，FourierPDC-SAM在细节上表现更优（如屋顶边缘更清晰、相邻区域分离更准确、噪声更少等）。}}{60}{figure.caption.40}%
+\contentsline {figure}{\numberline {5.1}{\ignorespaces 展示了 BioLiteNet 的整体框架。(A) BioLiteNet 结构。(B) 主干网络。(C) 仿射缩放卷积（AffScaleConv），其自上而下的卷积核尺寸分别为 1×1、3×3 和 6×6。(D) 蜜蜂感知选择器（BeeSenseSelector）。I 表示全局平均池化，II 表示 1×1 卷积，III 表示 Sigmoid 激活，IV 表示 Top-K 通道选择。}}{65}{figure.caption.42}%
+\contentsline {figure}{\numberline {5.2}{\ignorespaces 展示了消融实验结果：(a) 本文的完整模型。(b) 不包含仿射缩放卷积（AffScaleConv）。(c) 不包含蜜蜂感知选择器（BeeSenseSelector）。(d) 同时不包含仿射缩放卷积和蜜蜂感知选择器。其中符号 (I) 表示经过批归一化（BatchNorm）、线性整流（ReLU）和随机失活（Dropout）操作处理后的特征图。}}{77}{figure.caption.47}%
+\contentsline {figure}{\numberline {5.3}{\ignorespaces 展示了在 Indian Pines 数据集上的高光谱图像（HSI）分类可视化结果。(a) HybridSN。(b) ViT。(c) LeViT。(d) DiT。(e) HiT。(f) Yang。(g) RvT。(h) T2T。(i) DGPF。(j) 本文方法。}}{79}{figure.caption.49}%
+\contentsline {figure}{\numberline {5.4}{\ignorespaces 展示了在 Pavia University 数据集上的高光谱图像（HSI）分类可视化结果。(a) HybridSN。(b) ViT。(c) LeViT。(d) DiT。(e) HiT。(f) Yang。(g) RvT。(h) T2T。(i) DGPF。(j) 本文提出的方法。}}{79}{figure.caption.50}%
+\contentsline {figure}{\numberline {5.5}{\ignorespaces 展示了在 WHU-Hi-LongKou 数据集上的高光谱图像（HSI）分类可视化结果。(a) HybridSN。(b) ViT。(c) LeViT。(d) DiT。(e) HiT。(f) Yang。(g) RvT。(h) T2T。(i) DGPF。(j) 本文提出的方法。}}{80}{figure.caption.51}%
 \contentsfinish 
