@@ -23,11 +23,25 @@
 
 为了克服这些局限性，打通通用大模型向遥感灾害感知平滑迁移的理论链路，本文提出了一种全新的 SAM 适配框架——FourierPDC-SAM。该框架旨在通过极低成本的参数微调，构建互补的特征表征体系（complementary representations），在保留局部灾害特征响应的同时，稳健提取全局上下文信息，从而实现灾害区域的精细化像素级提取。
 
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=.8\linewidth]{figures/FSAMstructure.png}
+  \caption{FourierPDC-SAM架构图，展示了像素差分引导卷积和频域增强模块与标准SAM框架的融合，以提升灾后图像的分割性能。}
+  \label{fig:FSAMstructure}
+\end{figure}
+
 \section{面向局部细节补偿的像素差分感知机制 (Pixel Difference Convolution, PDC)}
 在视觉大模型（如 SAM）的编码器执行深层特征提取与激进下采样的过程中，包含目标微观拓扑结构的高频空间信息往往会被不可逆地平滑或滤除。为了在参数高效微调（PEFT）的框架下，从空间域（Spatial Domain）有效补偿这些流失的局部细节响应，本文在视觉大模型的编码器中创新性地引入了像素差分感知机制（Pixel Difference Convolution, PDC）。
 
 \subsection{标准卷积在细粒度特征提取中的感受野局限性}
 在典型的城乡灾害评估等复杂遥感应用中，受灾区域往往呈现出极具挑战性的视觉特征：微小的空间尺度（Small Spatial Scales）、微弱的光谱差异（Weak Spectral Differences）以及极度模糊的物理边界（Ambiguous Boundaries）。例如，建筑物表面的细微裂缝、散落的破碎瓦砾与周围完好的土壤或水泥地面在光谱反射率上高度相似。
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=.8\linewidth]{figures/PDC1.png}
+  \caption{像素差分卷积（PDC）模块的结构。}
+  \label{fig:PDC}
+\end{figure}
 
 传统的深度学习网络通常依赖标准卷积或常规的图块嵌入（Patch Embedding）算子来提取特征。然而，标准卷积的内积运算本质上是一种局部低通滤波器（Low-pass Filter），倾向于聚合邻域像素的共性而平滑局部差异。这种机制在面对灾害场景中细粒度的损伤模式（Fine-grained Damage Patterns）、低对比度边界（Low-contrast Boundaries）和高度破碎的结构（Fragmented Structures）时，往往会失效并导致严重的特征混淆。为了打破这一局限，系统迫切需要一种能够显式捕捉极微小空间突变的高频特征提取算子。
 
@@ -39,6 +53,13 @@
 
 \section{抑制复杂背景干扰的频域全局增强策略 (Frequency Enhancement, FE)}
 在前一节中，像素差分感知机制（PDC）成功实现了局部空间突变的微观特征提取。然而，面对灾害遥感影像，仅依赖空间域的局部感知仍具有局限性。灾害损伤通常表现出跨越不同空间频率的多尺度特征 。这些特征的跨度极大，既包含了表征细粒度结构裂缝的高频信号，也包含了表征大范围破坏模式的低频信号 。为了全面捕捉这些全局光谱模式，本文在空间域 PDC 模块之外，并行引入了频域全局增强（Frequency-domain Enhancement, FE）处理机制 。
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=.8\linewidth]{figures/FE.png}
+  \caption{频域增强（FE）模块的结构。}
+  \label{fig:FE}
+\end{figure}
 
 \subsection{空间域复杂形态的拓扑混淆与光谱相近性难题}
 在城乡灾害损毁评估中，受损区域往往表现出极高的复杂性：微小的空间尺度、碎片化的分布以及与背景极低的光谱对比度。特别是受损的废墟残骸与自然裸土在可见光空间域的光谱特征高度相近，导致空间域卷积算子极易产生拓扑混淆。
@@ -79,8 +100,21 @@ PDC 模块擅长捕捉局部的空间几何突变，而 FE 模块则专注于捕
 \subsection{像素级分割精度定量分析与应急响应效能}
 为了直观展示频空协同适配器对基础大模型的性能驱动，表 1 汇总了 FourierPDC-SAM 与原始 SAM 在 xBD 数据集上的全局定量测试结果。
 
-表 4-1 FourierPDC-SAM 与原始 SAM 在 xBD 数据集上的全局性能对比
-(注：排版时将此表替换为原文 Table 1)
+\begin{table}[htbp]
+\centering
+\caption{FourierPDC-SAM与原始SAM在xBD数据集上的整体性能对比。}
+\label{tab:performance_xbd}
+\begin{tabular}{l c c c c}
+\toprule
+Model & IoU & Dice/F1 & Precision & Recall \\
+\midrule
+SAM                            & 0.7043 & 0.8221 & 0.8139 & 0.8387 \\
++PDC                           & 0.7120 & 0.8270 & 0.8230 & 0.8370 \\
++FE                            & 0.7200 & 0.8328 & 0.8370 & 0.8350 \\
+\textbf{Ours (FourierPDC-SAM)} & \textbf{0.7276} & \textbf{0.8386} & \textbf{0.8511} & \textbf{0.8322} \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 测试数据表明，原始 SAM 模型在灾害场景下的 IoU 仅为 0.7043，Dice 分数为 0.8221，精确率为 0.8139。引入本文提出的频空双维协同机制后，完整架构（FourierPDC-SAM）实现了全方位的性能跃升：
 
@@ -91,8 +125,24 @@ PDC 模块擅长捕捉局部的空间几何突变，而 FE 模块则专注于捕
 \subsection{频空双维算子的正交消融实验与架构寻优}
 为了量化剥离空间差分建模（PDC）、频域增强（FE）以及融合策略对大模型的独立贡献，本文设计了详尽的组件级消融实验（Ablation Study）。
 
-表 4-2 FourierPDC-SAM 内部组件及融合策略的消融实验结果
-(注：排版时将此表替换为原文 Table 2)
+\begin{table}[htbp]
+\centering
+\caption{关于FourierPDC-SAM组件的消融实验。}
+\label{tab:ablation_fourierpdc_sam}
+\begin{tabular}{c l c c c c}
+\toprule
+ID & Variant & IoU & Dice/F1 & Precision & Recall \\
+\midrule
+A & SAM (baseline)                   & 0.7043 & 0.8221 & 0.8139 & 0.8387 \\
+B & +PDC only                        & 0.7120 & 0.8270 & 0.8230 & 0.8370 \\
+C & +FE only                         & 0.7160 & 0.8280 & 0.8375 & 0.8247 \\
+D & PDC + FE (additive fusion)       & 0.7192 & 0.8299 & 0.8433 & 0.8206 \\
+\textbf{E} & \textbf{Ours: PDC + FE (multiplicative)} & \textbf{0.7276} & \textbf{0.8386} & \textbf{0.8511} & \textbf{0.8322} \\
+F & w/o pixel difference in PDC      & 0.7075 & 0.8235 & 0.8185 & 0.8379 \\
+G & Linear spectrum (no log scaling) & 0.7215 & 0.8321 & 0.8450 & 0.8221 \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 频空单分支的有效性解耦： 以原始 SAM 为基准（变体 A，IoU 0.7043）。单独挂载像素差分引导卷积（+PDC only，变体 B）将 IoU 提升至 0.7120；而单独挂载傅里叶增强分支（+FE only，变体 C）将 IoU 提升至 0.7160。这表明 PDC 与 FE 均能有效提升基础 SAM 的性能，其中频域增强（FE）展现出略优的增益效果。然而，任何单一组件均无法企及完整频空双分支协同模型（变体 E，IoU 0.7276）的性能峰值。
 
@@ -102,6 +152,13 @@ PDC 模块擅长捕捉局部的空间几何突变，而 FE 模块则专注于捕
 
 \subsection{细粒度轮廓重构的定性可视化分析}
 为了直观解析 FourierPDC-SAM 在微观拓扑提取上的视觉机理，本文选取了两个具有代表性的城市灾害场景进行了定性可视化对比。
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=.8\linewidth]{figures/result.png}
+  \caption{在两个具有代表性的城市场景上的定性比较。在相同的提示和阈值下，与原始SAM相比，FourierPDC-SAM在细节上表现更优（如屋顶边缘更清晰、相邻区域分离更准确、噪声更少等）。}
+  \label{fig:SAMresult}
+\end{figure}
 
 在给定完全相同的提示（Identical prompts）与二值化阈值的严格控制下，FourierPDC-SAM 展现出了压倒性的细节描摹优势：
 

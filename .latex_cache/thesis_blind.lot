@@ -6,4 +6,6 @@
 \contentsline {table}{\numberline {3.6}{\ignorespaces 关于突触分形剪枝（SFP）在不同剪枝率下的消融实验。25\%的剪枝率在性能和计算效率之间取得了最佳的平衡。}}{42}{table.caption.26}%
 \contentsline {table}{\numberline {3.7}{\ignorespaces 关于多分辨率流形路由器（MMR）的消融实验。每个组件都通过对多尺度几何感知专家路由进行建模，为性能提升做出了贡献。}}{43}{table.caption.28}%
 \contentsline {table}{\numberline {3.8}{\ignorespaces MMR模块中不同专家数量（$K$）下的性能。增加$K$可以提高mAP，最高可达6个专家，超过此数量则收益微乎其微或呈负增长。}}{43}{table.caption.29}%
+\contentsline {table}{\numberline {4.1}{\ignorespaces FourierPDC-SAM与原始SAM在xBD数据集上的整体性能对比。}}{58}{table.caption.38}%
+\contentsline {table}{\numberline {4.2}{\ignorespaces 关于FourierPDC-SAM组件的消融实验。}}{59}{table.caption.39}%
 \contentsfinish 

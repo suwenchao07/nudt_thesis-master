@@ -14,4 +14,8 @@
 \contentsline {figure}{\numberline {3.14}{\ignorespaces 不同遥感目标检测器在DIOR-R数据集上的检测性能。红色代表本文模型。}}{44}{figure.caption.31}%
 \contentsline {figure}{\numberline {3.15}{\ignorespaces DOTA 数据集中简单堆场（Yard）场景的检测结果及热力图。每组左图为叠加了检测框的原图，右图为特征图对应的注意力热力图。基线（Baseline）模型的热力图呈现出分散的噪声，且目标与背景的对比度较低。LiteFM-RSDet 在车辆和集装箱的轮廓处生成了亮度集中的高响应区域，有效抑制了空旷场地和阴影区域，且检测框与几何边界贴合得更加紧密。与基线模型相比，LiteFM-RSDet 在成排车辆和集装箱的边缘处形成了更密集的亮区，背景抑制效果明显，这验证了分形剪枝在提升弱纹理小目标检测能力方面的有效性。}}{45}{figure.caption.32}%
 \contentsline {figure}{\numberline {3.16}{\ignorespaces DOTA 数据集中复杂街区（Neighbourhood）场景的检测结果及热力图。每组左图为叠加了检测框的原图，右图为对应特征图的注意力热力图。基线（Baseline）模型在屋脊和植被纹理处产生了碎片化的激活响应，导致对小型车辆和道路间隙中的目标漏检。LiteFM-RSDet 的热力图在矩形屋顶、道路中心带以及车辆集群内部生成了连贯的条状亮区，并对树冠和阴影等无关纹理保持极低的响应，展示了曲率调制的流线路由（streamer routing）在复杂背景下的聚焦优势。}}{46}{figure.caption.33}%
+\contentsline {figure}{\numberline {4.1}{\ignorespaces FourierPDC-SAM架构图，展示了像素差分引导卷积和频域增强模块与标准SAM框架的融合，以提升灾后图像的分割性能。}}{50}{figure.caption.35}%
+\contentsline {figure}{\numberline {4.2}{\ignorespaces 像素差分卷积（PDC）模块的结构。}}{50}{figure.caption.36}%
+\contentsline {figure}{\numberline {4.3}{\ignorespaces 频域增强（FE）模块的结构。}}{52}{figure.caption.37}%
+\contentsline {figure}{\numberline {4.4}{\ignorespaces 在两个具有代表性的城市场景上的定性比较。在相同的提示和阈值下，与原始SAM相比，FourierPDC-SAM在细节上表现更优（如屋顶边缘更清晰、相邻区域分离更准确、噪声更少等）。}}{60}{figure.caption.40}%
 \contentsfinish 
